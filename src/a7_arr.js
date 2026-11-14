@@ -3,7 +3,7 @@ var PCOL=['#ff5d5d','#38bdf8','#4ade80','#fb923c'],PL='ABCD';
 function setEd(i,quiet){S.song.ed=Math.max(0,Math.min(i,S.song.pats.length-1));S.song.rows=S.song.pats[S.song.ed];ROWS().forEach(function(r){refreshRow(r.id)});buildPBar();if(!quiet)smp('pop',0,{dest:BUS.ui,gain:.6,rate:1+S.song.ed*.12})}
 function pb(cls,html,fn){var b=document.createElement('button');b.className='pb '+cls;b.innerHTML=html;b.addEventListener('click',function(e){unlock();fn(e,b)});return b}
 function buildPBar(){var B=$('pbar');if(!B)return;B.innerHTML='';if(!S.song)return;pats(S.song);
- if(S.mode==='zoe'){if(typeof buildZBar==="function")buildZBar(B);return}
+ songBadge(S.song.ed);if(S.mode==='zoe'){undoVis();return}
  var L=document.createElement('span');L.className='pbl';L.textContent='Parts';B.appendChild(L);
  S.song.pats.forEach(function(pt,i){var b=pb('part'+(i===S.song.ed?' on':''),PL[i],function(){S.whole=false;setEd(i);toast('🔁 Looping part '+PL[i])});b.style.setProperty('--pc',PCOL[i]);b.dataset.p=i;B.appendChild(b)});
  if(S.song.pats.length<4)B.appendChild(pb('add','＋',function(){var n=S.song.pats.length,cp=JSON.parse(JSON.stringify(S.song.rows));S.song.pats.push(cp);if(S.song.chain.length<8)S.song.chain.push(n);S.whole=true;setEd(n,true);
@@ -15,8 +15,9 @@ function buildPBar(){var B=$('pbar');if(!B)return;B.innerHTML='';if(!S.song)retu
  if(S.song.chain.length<8&&S.song.pats.length>1)B.appendChild(pb('mini','＋',function(){S.song.chain.push(S.song.ed);S.whole=true;buildPBar();save()}));
  if(S.song.chain.length>1)B.appendChild(pb('mini','－',function(){S.song.chain.pop();buildPBar();save()}));
  if(S.song.chain.length>1)B.appendChild(pb('whole'+(songMode()?' on':''),'🎬 Whole song',function(){S.whole=!songMode();if(S.whole){ci=0}buildPBar();toast(S.whole?'🎬 Playing the whole song':'🔁 Looping part '+PL[S.song.ed])}));
- var sp=document.createElement('span');sp.style.flex='1';B.appendChild(sp);if(typeof buildFunBtns==="function")buildFunBtns(B)}
-function pbarStep(q){var B=$('pbar');if(!B)return;if(songMode()&&q.pat!==S.song.ed&&q.pat<S.song.pats.length)setEd(q.pat,true);
+ undoVis();if(typeof fitDrawer==='function')fitDrawer()}
+function songBadge(p){var e=$('songP');if(!e)return;e.textContent=S.song.pats.length>1||S.song.chain.length>1?PL[p]+(songMode()?' ▶':''):'A';e.style.setProperty('--pc',PCOL[p]||PCOL[0])}
+function pbarStep(q){var B=$('pbar');if(!B)return;if(songMode())songBadge(q.pat);if(songMode()&&q.pat!==S.song.ed&&q.pat<S.song.pats.length)setEd(q.pat,true);
  B.querySelectorAll('.cs').forEach(function(c){c.classList.toggle('cur',songMode()&&+c.dataset.j===q.ci)});B.querySelectorAll('.part').forEach(function(c){c.classList.toggle('cur',+c.dataset.p===q.pat)})}
 /* Magic Keys recording: notes snap to the nearest beat step that was heard and land in Birdie's (or Unicorn's) row */
 var kRec=false;

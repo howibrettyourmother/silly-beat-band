@@ -269,23 +269,63 @@ body:not(.zoe) .key .kp{display:none}
 body.zoe .tb{border-radius:20px}
 body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6;border-radius:12px}
 @media (max-width:1120px){#top{gap:6px;padding-right:8px}.tb{min-width:50px;padding:0 6px;font-size:11px}#tempo{padding:0 8px;gap:4px}#tempo input{width:88px}#tabs .tb{min-width:60px}#dad{min-width:112px;font-size:14px}#play{min-width:64px}}
+/* v1.2 layout: slim toolbar, compact stage, song drawer, more menu */
+#top{min-height:56px;padding:4px 8px 4px 56px;gap:6px}
+.tb{height:50px;min-width:54px;font-size:11px;border-radius:14px}.tb .emo{font-size:22px}
+.tb.big1{min-width:78px;font-size:13px;height:52px}.tb.big1 .emo{font-size:26px}
+#play{background:#22c55e}
+#fixB{background:linear-gradient(180deg,#c084fc,#7c3aed);color:#fff;min-width:96px}body.zoe #fixB{background:linear-gradient(180deg,#fff,#ffb3dc);color:#c2185b;min-width:120px}
+#fixB.zap{animation:recp .6s ease-out}
+.tsp{flex:1}
+#tabs{margin:0;padding:3px}#tabs .tb{min-width:56px;height:46px}
+#tempo{height:50px;padding:0 8px;gap:4px}#tempo input{width:96px}
+#ztB{display:none}body.zoe #ztB{display:flex}body.zoe #songB{display:none}
+#songB{position:relative}#songP{display:inline-block;min-width:16px;border-radius:6px;padding:0 3px;background:var(--pc,#ff5d5d);color:#fff}
+#songB.on{background:var(--acc);color:#3a1d00}
+#dad{min-width:118px;font-size:15px}#dad .emo{font-size:22px}
+#moreB{background:linear-gradient(180deg,#38bdf8,#2563eb);color:#fff;min-width:60px}#moreB .emo{font-size:24px}body.zoe #moreB{background:linear-gradient(180deg,#ff8ad8,#ff4fa3)}
+#moreB.dot:after{content:"";position:absolute;right:6px;top:6px;width:10px;height:10px;border-radius:50%;background:#ffd23f;box-shadow:0 0 0 2px #0004}#moreB{position:relative}
+body:not(.zoe) #stage{height:clamp(84px,12.5vh,112px)}body.zoe #stage{height:clamp(116px,17vh,150px)}
+.cr .bd{width:54px;height:54px}body.zoe .cr .bd{width:76px;height:76px}.cr{bottom:12px}
+.cr .nm{font-size:10px;padding:0 5px}body:not(.zoe) .cr .nm{position:absolute;left:50%;transform:translateX(-50%);bottom:-11px}
+.bch .bd{width:38px;height:38px}body.zoe .bch .bd{width:48px;height:48px}.bch .nm{display:none}
+#bench{padding:18px 4px 4px;gap:2px}#hint{top:3px;font-size:11px}
+#gridWrap{padding:4px 8px 6px}#colhead{height:14px}body.zoe #colhead{height:24px}
+/* song drawer */
+#songDrawer{position:fixed;left:8px;right:8px;bottom:0;z-index:15;background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:22px 22px 0 0;box-shadow:0 -8px 30px #0008;padding:8px 12px calc(10px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .28s cubic-bezier(.2,1.2,.4,1)}
+#songDrawer.on{transform:none}
+body.songOpen #stage{display:none}body.songOpen #gridWrap{padding-bottom:132px}
+#songDrawer .dh{display:flex;align-items:center;gap:12px;margin-bottom:6px}#songDrawer .dh b{font-size:24px;color:var(--acc)}#songDrawer .dh span{font-size:13px;opacity:.8}#songDrawer .x{position:static;margin-left:auto}
+#pbar{padding:0;min-height:52px;gap:8px;flex-wrap:wrap}.pb{height:48px;min-width:54px;font-size:22px}.pb.cs{min-width:42px;height:42px;font-size:18px}.pb.mini{min-width:42px;height:42px}.pb.whole{font-size:16px;padding:0 14px}
+#pbar .pbl{display:inline!important;font-size:12px}
+/* more menu */
+#moreOv{align-items:flex-start;justify-content:flex-end;padding:64px 10px 10px}#moreOv .card{max-width:min(96vw,560px)}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mg2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.mi{display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:20px;padding:12px 6px;background:#fff2;box-shadow:0 5px 0 #0005;font-weight:900;font-size:16px;min-height:96px;justify-content:center}
+.mi .emo{font-size:40px}.mi small{font-size:11px;font-weight:700;opacity:.8}.mg2 .mi{min-height:70px;font-size:13px;padding:8px 4px}.mg2 .mi .emo{font-size:28px}
+.mi.end{background:linear-gradient(180deg,#ff6b6b,#d62828);color:#fff}.mi.dis{opacity:.35}
+body.zoe .mi{font-size:18px}body.zoe .mi .emo{font-size:46px}
+@media (max-width:1120px){#top{gap:5px}.tb{min-width:50px;padding:0 5px}#tempo input{width:76px}#dad{min-width:104px;font-size:13px}#fixB{min-width:88px}}
 </style></head><body>
 <div id="zfloat"></div><div id="app">
  <div id="top">
-  <button class="tb" id="play"><span class="emo">▶️</span>Play</button>
-  <div id="tempo"><span class="emo">🐢</span><input id="bpm" type="range" min="60" max="180" step="2" value="110" aria-label="tempo"><span class="emo">🐇</span><b id="bpmv">110</b></div>
-  <div id="ztempo"><button class="tb" data-t="84"><span class="emo">🐢</span>Slow</button><button class="tb" data-t="108"><span class="emo">🐰</span>Hop</button><button class="tb" data-t="132"><span class="emo">🚀</span>Zoom</button></div>
+  <button class="tb big1" id="play"><span class="emo">▶️</span>Play</button>
+  <button class="tb big1" id="fixB"><span class="emo">🪄</span><span id="fixL">Fix my beat</span></button>
   <div id="tabs"><button class="tb on" data-s="beat"><span class="emo">🥁</span>Beat</button><button class="tb" data-s="keys"><span class="emo">🎹</span>Keys</button><button class="tb" data-s="studio"><span class="emo">🎤</span>Studio</button></div>
-  <button class="tb" id="presetB"><span class="emo">🎸</span>Styles</button>
+  <div id="tempo"><span class="emo">🐢</span><input id="bpm" type="range" min="60" max="180" step="2" value="110" aria-label="tempo"><span class="emo">🐇</span><b id="bpmv">110</b></div>
+  <div id="ztempo" style="display:none"><button class="tb" data-t="84"></button><button class="tb" data-t="108"></button><button class="tb" data-t="132"></button></div>
+  <button class="tb" id="ztB"><span class="emo" id="ztE">🐰</span><span id="ztL">Hop</span></button>
+  <span class="tsp"></span>
+  <button class="tb" id="undoB" style="display:none"><span class="emo">↩️</span>Undo</button>
+  <button class="tb" id="songB"><span class="emo">🎬</span><span>Song <b id="songP">A</b></span></button>
   <button class="tb" id="dad"><span class="emo">⭐</span><span class="mk" id="dadL">Dad, listen!</span></button>
   <button class="tb" id="saveB"><span class="emo">📂</span>My songs</button>
-  <button class="tb" id="themeB"><span class="emo">🎨</span>Colors</button>
+  <button class="tb" id="moreB"><span class="emo">➕</span>More</button>
   <button class="tb" id="mode"><span class="emo" id="modeE">🦄</span><span id="modeL">Zoe</span></button>
  </div>
  <div class="scr on" id="s-beat">
   <div id="stage"><div class="lights"><i></i><i></i><i></i></div><div id="stageL"><div id="hint">Drag critters onto the stage · tap one to hush it</div></div><div id="bench"></div></div>
-  <div id="pbar"></div>
-  <div id="gridWrap"><div id="colhead"></div><div id="grid"></div></div>
+    <div id="gridWrap"><div id="colhead"></div><div id="grid"></div></div>
  </div>
  <div class="scr" id="s-keys">
   <div id="keysTop"></div>
@@ -311,16 +351,18 @@ body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6
  <div><button class="big" id="copyB">📋 Copy link</button><button class="big alt" id="shareSys" style="display:none">📤 Share</button></div></div></div>
 <div class="ov" id="themeOv"><div class="card"><button class="x">✕</button><h2>Pick your colors!</h2><div class="thg" id="thg"></div></div></div>
 <div class="ov" id="stickOv"><div class="card"><button class="x">✕</button><h2>My stickers</h2><div class="stg" id="stg"></div></div></div>
+<div id="songDrawer"><div class="dh"><b class="mk">🎬 Song Builder</b><span>Make parts A-D, then line them up into a song</span><button class="x" id="songX">✕</button></div><div id="pbar"></div></div>
+<div class="ov" id="moreOv"><div class="card"><button class="x">✕</button><h2 id="moreH">More fun</h2><div class="mg" id="moreG"></div><div class="mg2" id="moreG2"><button class="mi" id="presetB"><span class="emo">🎸</span>Styles</button><button class="mi" id="themeB"><span class="emo">🎨</span>Colors</button><button class="mi" id="shareM"><span class="emo">🔗</span>Share</button><button class="mi" id="songsM"><span class="emo">📂</span>My songs</button></div></div></div>
 <div class="ov" id="pickOv"><div class="card"><button class="x">✕</button><h2 id="pickH">Pick a sound</h2><div class="pg" id="pickG"></div></div></div>
 <div class="ov" id="show"><div id="party"><div class="beams"><i></i><i></i><i></i><i></i></div><div id="ball" class="emo">🪩</div><div id="floor"></div></div><button class="x" id="showX">✕</button><div id="showBy"></div><div id="showName"></div><div id="showBand"></div><div id="showBar"><i></i></div><div id="stickerWin"><span class="big1 emo" id="stickerE">🦄</span><b id="stickerT">You got a sticker!</b></div><div id="showEnd"><button class="big" id="showAgain">🔁 Again!</button><button class="big alt" id="showDone">👍 Done</button></div></div>
 <div class="ov" id="recvOv"><div class="card"><h2 id="recvH">Someone made you a song!</h2><div id="recvName" class="mk" style="font-size:34px;margin:6px 0 14px"></div><button class="big" id="recvPlay">▶ Listen!</button> <button class="big alt" id="recvRemix">🎛️ Remix it</button> <button class="big alt" id="recvNo">✕ No thanks</button></div></div>
 <div class="ov on" id="splash"><div id="logo">Silly<br>Beat Band</div><div id="splBand" class="emo"></div><button id="splGo" class="mk">▶ Let's jam!</button></div>
 <div id="rot"><div class="emo" style="font-size:80px">📱↻</div>Turn the iPad sideways!</div>
-<canvas id="fx"></canvas><div id="toast"></div><div id="ver">v1.1.2-20261114</div>
+<canvas id="fx"></canvas><div id="toast"></div><div id="ver">v1.2.0-20261114</div>
 <script>
 (function(){"use strict";
-/* ===== Silly Beat Band v1.1.2-20261114 : data ===== */
-var VER='1.1.2-20261114';
+/* ===== Silly Beat Band v1.2.0-20261114 : data ===== */
+var VER='1.2.0-20261114';
 var $=function(id){return document.getElementById(id)};
 var Q=location.search;
 var KID=(Q.match(/[?&](?:kid|mode)=(alex|zoe)\b/)||[])[1];
@@ -717,7 +759,7 @@ var PCOL=['#ff5d5d','#38bdf8','#4ade80','#fb923c'],PL='ABCD';
 function setEd(i,quiet){S.song.ed=Math.max(0,Math.min(i,S.song.pats.length-1));S.song.rows=S.song.pats[S.song.ed];ROWS().forEach(function(r){refreshRow(r.id)});buildPBar();if(!quiet)smp('pop',0,{dest:BUS.ui,gain:.6,rate:1+S.song.ed*.12})}
 function pb(cls,html,fn){var b=document.createElement('button');b.className='pb '+cls;b.innerHTML=html;b.addEventListener('click',function(e){unlock();fn(e,b)});return b}
 function buildPBar(){var B=$('pbar');if(!B)return;B.innerHTML='';if(!S.song)return;pats(S.song);
- if(S.mode==='zoe'){if(typeof buildZBar==="function")buildZBar(B);return}
+ songBadge(S.song.ed);if(S.mode==='zoe'){undoVis();return}
  var L=document.createElement('span');L.className='pbl';L.textContent='Parts';B.appendChild(L);
  S.song.pats.forEach(function(pt,i){var b=pb('part'+(i===S.song.ed?' on':''),PL[i],function(){S.whole=false;setEd(i);toast('🔁 Looping part '+PL[i])});b.style.setProperty('--pc',PCOL[i]);b.dataset.p=i;B.appendChild(b)});
  if(S.song.pats.length<4)B.appendChild(pb('add','＋',function(){var n=S.song.pats.length,cp=JSON.parse(JSON.stringify(S.song.rows));S.song.pats.push(cp);if(S.song.chain.length<8)S.song.chain.push(n);S.whole=true;setEd(n,true);
@@ -729,8 +771,9 @@ function buildPBar(){var B=$('pbar');if(!B)return;B.innerHTML='';if(!S.song)retu
  if(S.song.chain.length<8&&S.song.pats.length>1)B.appendChild(pb('mini','＋',function(){S.song.chain.push(S.song.ed);S.whole=true;buildPBar();save()}));
  if(S.song.chain.length>1)B.appendChild(pb('mini','－',function(){S.song.chain.pop();buildPBar();save()}));
  if(S.song.chain.length>1)B.appendChild(pb('whole'+(songMode()?' on':''),'🎬 Whole song',function(){S.whole=!songMode();if(S.whole){ci=0}buildPBar();toast(S.whole?'🎬 Playing the whole song':'🔁 Looping part '+PL[S.song.ed])}));
- var sp=document.createElement('span');sp.style.flex='1';B.appendChild(sp);if(typeof buildFunBtns==="function")buildFunBtns(B)}
-function pbarStep(q){var B=$('pbar');if(!B)return;if(songMode()&&q.pat!==S.song.ed&&q.pat<S.song.pats.length)setEd(q.pat,true);
+ undoVis();if(typeof fitDrawer==='function')fitDrawer()}
+function songBadge(p){var e=$('songP');if(!e)return;e.textContent=S.song.pats.length>1||S.song.chain.length>1?PL[p]+(songMode()?' ▶':''):'A';e.style.setProperty('--pc',PCOL[p]||PCOL[0])}
+function pbarStep(q){var B=$('pbar');if(!B)return;if(songMode())songBadge(q.pat);if(songMode()&&q.pat!==S.song.ed&&q.pat<S.song.pats.length)setEd(q.pat,true);
  B.querySelectorAll('.cs').forEach(function(c){c.classList.toggle('cur',songMode()&&+c.dataset.j===q.ci)});B.querySelectorAll('.part').forEach(function(c){c.classList.toggle('cur',+c.dataset.p===q.pat)})}
 /* Magic Keys recording: notes snap to the nearest beat step that was heard and land in Birdie's (or Unicorn's) row */
 var kRec=false;
@@ -816,12 +859,30 @@ function surprise(){unlock();var z=S.mode==='zoe',pid=rnd(PRESET_ORDER),P0=PRESE
  if(z)sg.zcRand=1;sg.ed=0;sg.name=genName();S.undo=was;stop();S.song=pats(sg);S.whole=true;kScale=null;applySong();save();
  smp('whee2',0,{dest:BUS.ui,gain:.6});setTimeout(function(){smp('sparkle',0,{dest:BUS.ui,gain:.6})},250);confetti(innerWidth/2,innerHeight*.35,70);if(z)sparkle(innerWidth/2,innerHeight*.4,50);
  toast('🎲 Surprise! "'+sg.name+'"');buildPBar();setTimeout(function(){start(true)},350)}
-function undoSurprise(){if(!S.undo)return;var o=JSON.parse(S.undo);S.undo=null;stop();S.song=pats(o);applySong();save();smp('pop',0,{dest:BUS.ui});toast('↩️ Back the way it was!');buildPBar()}
-function buildFunBtns(B){
- B.appendChild(pb('fun fix','<span class="emo">🪄</span>Fix my beat',fixBeat));B.appendChild(pb('fun','<span class="emo">🎲</span>Surprise',surprise));if(S.undo)B.appendChild(pb('fun undo','<span class="emo">↩️</span>Undo',undoSurprise));
- B.appendChild(pb('fun','<span class="emo">🥁</span>Fill',doFill));B.appendChild(pb('fun end','<span class="emo">🏁</span>ENDING',doEnding))}
-function buildZBar(B){B.classList.add('z');B.appendChild(pb('fun zb fix','<span class="emo">✨</span>Make it pretty',fixBeat));B.appendChild(pb('fun zb','<span class="emo">🎲</span>Surprise!',surprise));if(S.undo)B.appendChild(pb('fun zb','<span class="emo">↩️</span>Undo',undoSurprise));
- B.appendChild(pb('fun zb','<span class="emo">🥁</span>Drum roll!',doFill));B.appendChild(pb('fun zb end','<span class="emo">🏁</span>The End!',doEnding));B.appendChild(pb('fun zb stk','<span class="emo">📒</span>Stickers '+stickers().length,openStickers))}
+function undoSurprise(){if(!S.undo){undoVis();return}var o=JSON.parse(S.undo);S.undo=null;stop();S.song=pats(o);applySong();save();smp('pop',0,{dest:BUS.ui});toast('↩️ Back the way it was!');buildPBar();undoVis()}
+/* v1.2: big toolbar buttons + the ➕ More menu */
+var undoT=0;function undoVis(){var u=$('undoB');if(!u)return;u.style.display=S.undo?'':'none';clearTimeout(undoT);if(S.undo)undoT=setTimeout(function(){u.style.display='none'},12000)}
+function mi(h,fn,cls){var b=document.createElement('button');b.className='mi'+(cls?' '+cls:'');b.innerHTML=h;b.addEventListener('click',function(){unlock();fn()});return b}
+function buildMore(){var G=$('moreG'),z=S.mode==='zoe';G.innerHTML='';$('moreH').textContent=z?'More fun!':'More fun';
+ G.appendChild(mi('<span class="emo">🥁</span>'+(z?'Drum roll!':'Drum fill')+(z?'':'<small>at the end of the bar</small>'),doFill));
+ G.appendChild(mi('<span class="emo">🎲</span>'+(z?'Surprise!':'Surprise me')+(z?'':'<small>a brand-new song</small>'),surprise));
+ G.appendChild(mi('<span class="emo">🏁</span>'+(z?'The End!':'Big ENDING')+(z?'':'<small>finish with a bang</small>'),doEnding,'end'));
+ if(z)G.appendChild(mi('<span class="emo">📒</span>Stickers '+stickers().length,openStickers));
+ else{G.appendChild(mi('<span class="emo">🔴</span>Record a tune<small>play keys into the song</small>',function(){goScr('keys');var r=$('keysTop').querySelector('.ib.rec');if(r&&!kRec)r.click()}));
+  G.appendChild(mi('<span class="emo">🎬</span>Song Builder<small>parts A-D</small>',openSong))}
+ G.appendChild(mi('<span class="emo">↩️</span>Undo'+(z?'':'<small>'+(S.undo?'take back the last magic':'nothing to undo')+'</small>'),function(){if(S.undo)undoSurprise()},S.undo?'':'dis'));
+ $('shareM').style.display=z?'none':'';}
+function openSong(){if(S.mode==='zoe')return;buildPBar();$('songDrawer').classList.add('on');document.body.classList.add('songOpen');fitDrawer();$('songB').classList.add('on');smp('whee2',0,{dest:BUS.ui,gain:.35,rate:1.3})}
+function fitDrawer(){var d=$('songDrawer');if(d&&d.classList.contains('on'))$('gridWrap').style.paddingBottom=(d.getBoundingClientRect().height+8)+'px'}
+addEventListener('resize',fitDrawer);
+function closeSong(){$('gridWrap').style.paddingBottom='';$('songDrawer').classList.remove('on');document.body.classList.remove('songOpen');$('songB').classList.remove('on')}
+$('songB').addEventListener('click',function(){unlock();if($('songDrawer').classList.contains('on'))closeSong();else openSong()});$('songX').addEventListener('click',closeSong);
+$('moreB').addEventListener('click',function(){unlock();buildMore();open('moreOv');smp('pop',0,{dest:BUS.ui})});
+$('moreOv').addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.mi'))setTimeout(function(){close('moreOv')},0)},true);
+$('shareM').addEventListener('click',function(){$('shareB').click()});$('songsM').addEventListener('click',function(){$('saveB').click()});
+$('fixB').addEventListener('click',function(){var b=$('fixB');b.classList.remove('zap');void b.offsetWidth;b.classList.add('zap');if(S.scr!=='beat')goScr('beat');fixBeat()});
+$('undoB').addEventListener('click',function(){unlock();undoSurprise()});
+$('ztB').addEventListener('click',function(){unlock();var T=[84,108,132],i=(T.indexOf(T.filter(function(t){return Math.abs(t-S.song.bpm)<12})[0])+1)%3;S.song.bpm=T[i];syncTempo();setBeatVar();save();smp('boing1',0,{dest:BUS.ui,gain:.5,rate:S.song.bpm/108})});
 /* Dad, listen! dance party: spinning lights, a disco ball and a flashing dance floor (soft colour changes, never a hard strobe) */
 var FLOOR=[];
 function buildParty(){var P2=$('party');if(!P2)return;var F=$('floor');F.innerHTML='';FLOOR=[];for(var i=0;i<24;i++){var d=document.createElement('i');F.appendChild(d);FLOOR.push(d)}}
@@ -875,11 +936,11 @@ document.querySelectorAll('#tabs .tb').forEach(function(b){b.addEventListener('c
 $('play').addEventListener('click',function(){unlock();if(playing){stop();kWithBeat=false}else start()});
 $('bpm').addEventListener('input',function(){S.song.bpm=+this.value;$('bpmv').textContent=this.value;setBeatVar();save()});
 document.querySelectorAll('#ztempo .tb').forEach(function(b){b.addEventListener('click',function(){unlock();S.song.bpm=+b.dataset.t;syncTempo();setBeatVar();save();smp('boing1',0,{dest:BUS.ui,gain:.5,rate:S.song.bpm/108})})});
-function syncTempo(){$('bpm').value=S.song.bpm;$('bpmv').textContent=S.song.bpm;document.querySelectorAll('#ztempo .tb').forEach(function(b){b.classList.toggle('on',Math.abs(+b.dataset.t-S.song.bpm)<12)})}
+function syncTempo(){$('bpm').value=S.song.bpm;$('bpmv').textContent=S.song.bpm;var zt=S.song.bpm<96?['🐢','Slow']:S.song.bpm<120?['🐰','Hop']:['🚀','Zoom'];$('ztE').textContent=zt[0];$('ztL').textContent=zt[1]}
 /* presets */
 function buildPresets(){var G=$('pg');G.innerHTML='';PRESET_ORDER.forEach(function(id){var p=PRESETS[id],b=document.createElement('button');b.className='pc';b.innerHTML='<span class="emo">'+p.e+'</span>'+(S.mode==='zoe'?p.zn:p.n)+'<small>'+(S.mode==='zoe'?'':p.bpm+' beats a minute')+'</small>';
  b.addEventListener('click',function(){unlock();var was=playing;stop();var nm=S.song.name;S.song=fromPreset(id,S.mode);kScale=null;applySong();close('presetOv');confetti(innerWidth/2,innerHeight/2,60);smp('sparkle',0,{dest:BUS.ui});setTimeout(start,250);save()});G.appendChild(b)})}
-$('presetB').addEventListener('click',function(){unlock();buildPresets();open('presetOv')});
+$('presetB').addEventListener('click',function(){unlock();buildPresets();setTimeout(function(){open('presetOv')},10)});
 $('clearB').addEventListener('click',function(){stop();var p=S.song.p,b=S.song.bpm,ins=S.song.inst,band=S.song.band;S.song.pats=[blankRows(S.mode,S.song.n)];S.song.chain=[0];S.song.ed=0;pats(S.song);S.song.name='';applySong();close('presetOv');smp('whee2',0,{dest:BUS.ui,gain:.6});save()});
 function applySong(){pats(S.song);setBeatVar();syncTempo();buildGrid();buildPBar();if(S.scr==='keys')buildKeys()}
 /* names */
@@ -919,8 +980,8 @@ function savePrefs(){LS.set('prefs',{mode:S.mode,theme:S.theme})}
 /* modes */
 function loadCur(m){var c=LS.get('cur_'+m,null),d=c&&decSong(c);return d&&d.mode===m?d.song:fromPreset('silly',m)}
 function setMode(m,keepSong,newSong){if(S.song&&!S.guest)try{LS.set('cur_'+S.mode,encSong(S.song,S.mode))}catch(e){}S.mode=m;document.body.classList.toggle('zoe',m==='zoe');
- $('modeE').textContent=m==='zoe'?'🦖':'🦄';$('modeL').textContent=m==='zoe'?'Big kid':'Zoe mode';$('tempo').style.display=m==='zoe'?'none':'flex';$('ztempo').style.display=m==='zoe'?'flex':'none';
- $('dadL').textContent=KID==='zoe'||m==='zoe'?'Daddy, listen!':'Dad, listen!';
+ $('modeE').textContent=m==='zoe'?'🦖':'🦄';$('modeL').textContent=m==='zoe'?'Big kid':'Zoe mode';$('tempo').style.display=m==='zoe'?'none':'flex';
+ $('fixL').textContent=m==='zoe'?'Make it pretty':'Fix my beat';$('fixB').querySelector('.emo').textContent=m==='zoe'?'✨':'🪄';if(m==='zoe')closeSong();$('dadL').textContent=KID==='zoe'||m==='zoe'?'Daddy, listen!':'Dad, listen!';
  if(newSong)S.song=newSong;else if(!keepSong||!S.song||!S.song.rows[ROWS(m)[0].id]||S.song.n!==(m==='zoe'?8:16))S.song=loadCur(m);applyTheme();savePrefs();if(S.song)applySong()}
 $('mode').addEventListener('click',function(){unlock();stop();setMode(S.mode==='zoe'?'alex':'zoe');goScr(S.scr);smp(S.mode==='zoe'?'sparkle':'boing1',0,{dest:BUS.ui});if(S.mode==='zoe')sparkle(innerWidth-60,40,40);toast(S.mode==='zoe'?'🦄 Zoe mode!':'🦖 Big kid mode!')});
 /* Dad, listen! */
@@ -951,11 +1012,11 @@ function clearHash(){try{history.replaceState(null,'',location.pathname+location
  window.hubSave=function(){if(S.guest)return;try{LS.set('cur_'+S.mode,encSong(S.song,S.mode))}catch(e){}};addEventListener('pagehide',window.hubSave);
  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){window.hubSave();if(recState===1)recStop()}});
  document.addEventListener('gesturestart',function(e){e.preventDefault()});document.addEventListener('dblclick',function(e){e.preventDefault()});
- window.__SBB={S:S,start:start,stop:stop,goScr:goScr,setMode:setMode,enc:function(){return encSong(S.song,S.mode)},dec:decSong,openShow:openShow,BUF:BUF,MEME:MEME,memeList:memeList,AC:function(){return AC},ready:function(){return ready},VQlen:function(){return VQ.length},peak:function(){if(!METER)return 0;var a=new Float32Array(METER.fftSize);METER.getFloatTimeDomainData(a);var m=0;for(var i=0;i<a.length;i++)m=Math.max(m,Math.abs(a[i]));return m},setEd:setEd,stickers:stickers,crit:crit,applySong:applySong,fixRows:fixRows,rawChop:function(){return RAW?RAW.chop||'mic':null},meter:function(){return METER},preset:function(id){S.song=fromPreset(id,S.mode);applySong()},songMode:songMode,keyRecord:keyRecord,setRec:function(v){kRec=v},NG:NG,openShow:openShow}})();
+ window.__SBB={S:S,start:start,stop:stop,goScr:goScr,setMode:setMode,enc:function(){return encSong(S.song,S.mode)},dec:decSong,openShow:openShow,BUF:BUF,MEME:MEME,memeList:memeList,AC:function(){return AC},ready:function(){return ready},VQlen:function(){return VQ.length},peak:function(){if(!METER)return 0;var a=new Float32Array(METER.fftSize);METER.getFloatTimeDomainData(a);var m=0;for(var i=0;i<a.length;i++)m=Math.max(m,Math.abs(a[i]));return m},setEd:setEd,openSong:openSong,stickers:stickers,crit:crit,applySong:applySong,fixRows:fixRows,rawChop:function(){return RAW?RAW.chop||'mic':null},meter:function(){return METER},preset:function(id){S.song=fromPreset(id,S.mode);applySong()},songMode:songMode,keyRecord:keyRecord,setRec:function(v){kRec=v},NG:NG,openShow:openShow}})();
 
 })();
 </script>
-<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',function(){navigator.serviceWorker.register('sw.js?v=1.1.2-20261114').catch(function(){})})}</script>
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',function(){navigator.serviceWorker.register('sw.js?v=1.2.0-20261114').catch(function(){})})}</script>
 <script>/*hub-home*/(function(){var own='alex',k;try{k=localStorage.kidsHub}catch(e){}if(k!=='zoe'&&k!=='alex')k=own;
 var u=k==='zoe'?'/doodle-and-zoe/':'/alex-games/',b=document.createElement('div');b.id='hubHome';b.setAttribute('role','button');b.setAttribute('aria-label','hold to go home');
 b.innerHTML='<svg width="38" height="38" viewBox="0 0 38 38" style="position:absolute;left:0;top:0;pointer-events:none"><circle cx="19" cy="19" r="16" fill="none" stroke="#ffd54a" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 19 19)"/></svg><span style="position:relative;pointer-events:none">🏠</span>';

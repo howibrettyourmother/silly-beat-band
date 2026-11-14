@@ -39,12 +39,30 @@ function surprise(){unlock();var z=S.mode==='zoe',pid=rnd(PRESET_ORDER),P0=PRESE
  if(z)sg.zcRand=1;sg.ed=0;sg.name=genName();S.undo=was;stop();S.song=pats(sg);S.whole=true;kScale=null;applySong();save();
  smp('whee2',0,{dest:BUS.ui,gain:.6});setTimeout(function(){smp('sparkle',0,{dest:BUS.ui,gain:.6})},250);confetti(innerWidth/2,innerHeight*.35,70);if(z)sparkle(innerWidth/2,innerHeight*.4,50);
  toast('🎲 Surprise! "'+sg.name+'"');buildPBar();setTimeout(function(){start(true)},350)}
-function undoSurprise(){if(!S.undo)return;var o=JSON.parse(S.undo);S.undo=null;stop();S.song=pats(o);applySong();save();smp('pop',0,{dest:BUS.ui});toast('↩️ Back the way it was!');buildPBar()}
-function buildFunBtns(B){
- B.appendChild(pb('fun fix','<span class="emo">🪄</span>Fix my beat',fixBeat));B.appendChild(pb('fun','<span class="emo">🎲</span>Surprise',surprise));if(S.undo)B.appendChild(pb('fun undo','<span class="emo">↩️</span>Undo',undoSurprise));
- B.appendChild(pb('fun','<span class="emo">🥁</span>Fill',doFill));B.appendChild(pb('fun end','<span class="emo">🏁</span>ENDING',doEnding))}
-function buildZBar(B){B.classList.add('z');B.appendChild(pb('fun zb fix','<span class="emo">✨</span>Make it pretty',fixBeat));B.appendChild(pb('fun zb','<span class="emo">🎲</span>Surprise!',surprise));if(S.undo)B.appendChild(pb('fun zb','<span class="emo">↩️</span>Undo',undoSurprise));
- B.appendChild(pb('fun zb','<span class="emo">🥁</span>Drum roll!',doFill));B.appendChild(pb('fun zb end','<span class="emo">🏁</span>The End!',doEnding));B.appendChild(pb('fun zb stk','<span class="emo">📒</span>Stickers '+stickers().length,openStickers))}
+function undoSurprise(){if(!S.undo){undoVis();return}var o=JSON.parse(S.undo);S.undo=null;stop();S.song=pats(o);applySong();save();smp('pop',0,{dest:BUS.ui});toast('↩️ Back the way it was!');buildPBar();undoVis()}
+/* v1.2: big toolbar buttons + the ➕ More menu */
+var undoT=0;function undoVis(){var u=$('undoB');if(!u)return;u.style.display=S.undo?'':'none';clearTimeout(undoT);if(S.undo)undoT=setTimeout(function(){u.style.display='none'},12000)}
+function mi(h,fn,cls){var b=document.createElement('button');b.className='mi'+(cls?' '+cls:'');b.innerHTML=h;b.addEventListener('click',function(){unlock();fn()});return b}
+function buildMore(){var G=$('moreG'),z=S.mode==='zoe';G.innerHTML='';$('moreH').textContent=z?'More fun!':'More fun';
+ G.appendChild(mi('<span class="emo">🥁</span>'+(z?'Drum roll!':'Drum fill')+(z?'':'<small>at the end of the bar</small>'),doFill));
+ G.appendChild(mi('<span class="emo">🎲</span>'+(z?'Surprise!':'Surprise me')+(z?'':'<small>a brand-new song</small>'),surprise));
+ G.appendChild(mi('<span class="emo">🏁</span>'+(z?'The End!':'Big ENDING')+(z?'':'<small>finish with a bang</small>'),doEnding,'end'));
+ if(z)G.appendChild(mi('<span class="emo">📒</span>Stickers '+stickers().length,openStickers));
+ else{G.appendChild(mi('<span class="emo">🔴</span>Record a tune<small>play keys into the song</small>',function(){goScr('keys');var r=$('keysTop').querySelector('.ib.rec');if(r&&!kRec)r.click()}));
+  G.appendChild(mi('<span class="emo">🎬</span>Song Builder<small>parts A-D</small>',openSong))}
+ G.appendChild(mi('<span class="emo">↩️</span>Undo'+(z?'':'<small>'+(S.undo?'take back the last magic':'nothing to undo')+'</small>'),function(){if(S.undo)undoSurprise()},S.undo?'':'dis'));
+ $('shareM').style.display=z?'none':'';}
+function openSong(){if(S.mode==='zoe')return;buildPBar();$('songDrawer').classList.add('on');document.body.classList.add('songOpen');fitDrawer();$('songB').classList.add('on');smp('whee2',0,{dest:BUS.ui,gain:.35,rate:1.3})}
+function fitDrawer(){var d=$('songDrawer');if(d&&d.classList.contains('on'))$('gridWrap').style.paddingBottom=(d.getBoundingClientRect().height+8)+'px'}
+addEventListener('resize',fitDrawer);
+function closeSong(){$('gridWrap').style.paddingBottom='';$('songDrawer').classList.remove('on');document.body.classList.remove('songOpen');$('songB').classList.remove('on')}
+$('songB').addEventListener('click',function(){unlock();if($('songDrawer').classList.contains('on'))closeSong();else openSong()});$('songX').addEventListener('click',closeSong);
+$('moreB').addEventListener('click',function(){unlock();buildMore();open('moreOv');smp('pop',0,{dest:BUS.ui})});
+$('moreOv').addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.mi'))setTimeout(function(){close('moreOv')},0)},true);
+$('shareM').addEventListener('click',function(){$('shareB').click()});$('songsM').addEventListener('click',function(){$('saveB').click()});
+$('fixB').addEventListener('click',function(){var b=$('fixB');b.classList.remove('zap');void b.offsetWidth;b.classList.add('zap');if(S.scr!=='beat')goScr('beat');fixBeat()});
+$('undoB').addEventListener('click',function(){unlock();undoSurprise()});
+$('ztB').addEventListener('click',function(){unlock();var T=[84,108,132],i=(T.indexOf(T.filter(function(t){return Math.abs(t-S.song.bpm)<12})[0])+1)%3;S.song.bpm=T[i];syncTempo();setBeatVar();save();smp('boing1',0,{dest:BUS.ui,gain:.5,rate:S.song.bpm/108})});
 /* Dad, listen! dance party: spinning lights, a disco ball and a flashing dance floor (soft colour changes, never a hard strobe) */
 var FLOOR=[];
 function buildParty(){var P2=$('party');if(!P2)return;var F=$('floor');F.innerHTML='';FLOOR=[];for(var i=0;i<24;i++){var d=document.createElement('i');F.appendChild(d);FLOOR.push(d)}}

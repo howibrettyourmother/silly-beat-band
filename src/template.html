@@ -241,23 +241,63 @@ body:not(.zoe) .key .kp{display:none}
 body.zoe .tb{border-radius:20px}
 body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6;border-radius:12px}
 @media (max-width:1120px){#top{gap:6px;padding-right:8px}.tb{min-width:50px;padding:0 6px;font-size:11px}#tempo{padding:0 8px;gap:4px}#tempo input{width:88px}#tabs .tb{min-width:60px}#dad{min-width:112px;font-size:14px}#play{min-width:64px}}
+/* v1.2 layout: slim toolbar, compact stage, song drawer, more menu */
+#top{min-height:56px;padding:4px 8px 4px 56px;gap:6px}
+.tb{height:50px;min-width:54px;font-size:11px;border-radius:14px}.tb .emo{font-size:22px}
+.tb.big1{min-width:78px;font-size:13px;height:52px}.tb.big1 .emo{font-size:26px}
+#play{background:#22c55e}
+#fixB{background:linear-gradient(180deg,#c084fc,#7c3aed);color:#fff;min-width:96px}body.zoe #fixB{background:linear-gradient(180deg,#fff,#ffb3dc);color:#c2185b;min-width:120px}
+#fixB.zap{animation:recp .6s ease-out}
+.tsp{flex:1}
+#tabs{margin:0;padding:3px}#tabs .tb{min-width:56px;height:46px}
+#tempo{height:50px;padding:0 8px;gap:4px}#tempo input{width:96px}
+#ztB{display:none}body.zoe #ztB{display:flex}body.zoe #songB{display:none}
+#songB{position:relative}#songP{display:inline-block;min-width:16px;border-radius:6px;padding:0 3px;background:var(--pc,#ff5d5d);color:#fff}
+#songB.on{background:var(--acc);color:#3a1d00}
+#dad{min-width:118px;font-size:15px}#dad .emo{font-size:22px}
+#moreB{background:linear-gradient(180deg,#38bdf8,#2563eb);color:#fff;min-width:60px}#moreB .emo{font-size:24px}body.zoe #moreB{background:linear-gradient(180deg,#ff8ad8,#ff4fa3)}
+#moreB.dot:after{content:"";position:absolute;right:6px;top:6px;width:10px;height:10px;border-radius:50%;background:#ffd23f;box-shadow:0 0 0 2px #0004}#moreB{position:relative}
+body:not(.zoe) #stage{height:clamp(84px,12.5vh,112px)}body.zoe #stage{height:clamp(116px,17vh,150px)}
+.cr .bd{width:54px;height:54px}body.zoe .cr .bd{width:76px;height:76px}.cr{bottom:12px}
+.cr .nm{font-size:10px;padding:0 5px}body:not(.zoe) .cr .nm{position:absolute;left:50%;transform:translateX(-50%);bottom:-11px}
+.bch .bd{width:38px;height:38px}body.zoe .bch .bd{width:48px;height:48px}.bch .nm{display:none}
+#bench{padding:18px 4px 4px;gap:2px}#hint{top:3px;font-size:11px}
+#gridWrap{padding:4px 8px 6px}#colhead{height:14px}body.zoe #colhead{height:24px}
+/* song drawer */
+#songDrawer{position:fixed;left:8px;right:8px;bottom:0;z-index:15;background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:22px 22px 0 0;box-shadow:0 -8px 30px #0008;padding:8px 12px calc(10px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .28s cubic-bezier(.2,1.2,.4,1)}
+#songDrawer.on{transform:none}
+body.songOpen #stage{display:none}body.songOpen #gridWrap{padding-bottom:132px}
+#songDrawer .dh{display:flex;align-items:center;gap:12px;margin-bottom:6px}#songDrawer .dh b{font-size:24px;color:var(--acc)}#songDrawer .dh span{font-size:13px;opacity:.8}#songDrawer .x{position:static;margin-left:auto}
+#pbar{padding:0;min-height:52px;gap:8px;flex-wrap:wrap}.pb{height:48px;min-width:54px;font-size:22px}.pb.cs{min-width:42px;height:42px;font-size:18px}.pb.mini{min-width:42px;height:42px}.pb.whole{font-size:16px;padding:0 14px}
+#pbar .pbl{display:inline!important;font-size:12px}
+/* more menu */
+#moreOv{align-items:flex-start;justify-content:flex-end;padding:64px 10px 10px}#moreOv .card{max-width:min(96vw,560px)}
+.mg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mg2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.mi{display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:20px;padding:12px 6px;background:#fff2;box-shadow:0 5px 0 #0005;font-weight:900;font-size:16px;min-height:96px;justify-content:center}
+.mi .emo{font-size:40px}.mi small{font-size:11px;font-weight:700;opacity:.8}.mg2 .mi{min-height:70px;font-size:13px;padding:8px 4px}.mg2 .mi .emo{font-size:28px}
+.mi.end{background:linear-gradient(180deg,#ff6b6b,#d62828);color:#fff}.mi.dis{opacity:.35}
+body.zoe .mi{font-size:18px}body.zoe .mi .emo{font-size:46px}
+@media (max-width:1120px){#top{gap:5px}.tb{min-width:50px;padding:0 5px}#tempo input{width:76px}#dad{min-width:104px;font-size:13px}#fixB{min-width:88px}}
 </style></head><body>
 <div id="zfloat"></div><div id="app">
  <div id="top">
-  <button class="tb" id="play"><span class="emo">▶️</span>Play</button>
-  <div id="tempo"><span class="emo">🐢</span><input id="bpm" type="range" min="60" max="180" step="2" value="110" aria-label="tempo"><span class="emo">🐇</span><b id="bpmv">110</b></div>
-  <div id="ztempo"><button class="tb" data-t="84"><span class="emo">🐢</span>Slow</button><button class="tb" data-t="108"><span class="emo">🐰</span>Hop</button><button class="tb" data-t="132"><span class="emo">🚀</span>Zoom</button></div>
+  <button class="tb big1" id="play"><span class="emo">▶️</span>Play</button>
+  <button class="tb big1" id="fixB"><span class="emo">🪄</span><span id="fixL">Fix my beat</span></button>
   <div id="tabs"><button class="tb on" data-s="beat"><span class="emo">🥁</span>Beat</button><button class="tb" data-s="keys"><span class="emo">🎹</span>Keys</button><button class="tb" data-s="studio"><span class="emo">🎤</span>Studio</button></div>
-  <button class="tb" id="presetB"><span class="emo">🎸</span>Styles</button>
+  <div id="tempo"><span class="emo">🐢</span><input id="bpm" type="range" min="60" max="180" step="2" value="110" aria-label="tempo"><span class="emo">🐇</span><b id="bpmv">110</b></div>
+  <div id="ztempo" style="display:none"><button class="tb" data-t="84"></button><button class="tb" data-t="108"></button><button class="tb" data-t="132"></button></div>
+  <button class="tb" id="ztB"><span class="emo" id="ztE">🐰</span><span id="ztL">Hop</span></button>
+  <span class="tsp"></span>
+  <button class="tb" id="undoB" style="display:none"><span class="emo">↩️</span>Undo</button>
+  <button class="tb" id="songB"><span class="emo">🎬</span><span>Song <b id="songP">A</b></span></button>
   <button class="tb" id="dad"><span class="emo">⭐</span><span class="mk" id="dadL">Dad, listen!</span></button>
   <button class="tb" id="saveB"><span class="emo">📂</span>My songs</button>
-  <button class="tb" id="themeB"><span class="emo">🎨</span>Colors</button>
+  <button class="tb" id="moreB"><span class="emo">➕</span>More</button>
   <button class="tb" id="mode"><span class="emo" id="modeE">🦄</span><span id="modeL">Zoe</span></button>
  </div>
  <div class="scr on" id="s-beat">
   <div id="stage"><div class="lights"><i></i><i></i><i></i></div><div id="stageL"><div id="hint">Drag critters onto the stage · tap one to hush it</div></div><div id="bench"></div></div>
-  <div id="pbar"></div>
-  <div id="gridWrap"><div id="colhead"></div><div id="grid"></div></div>
+    <div id="gridWrap"><div id="colhead"></div><div id="grid"></div></div>
  </div>
  <div class="scr" id="s-keys">
   <div id="keysTop"></div>
@@ -283,6 +323,8 @@ body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6
  <div><button class="big" id="copyB">📋 Copy link</button><button class="big alt" id="shareSys" style="display:none">📤 Share</button></div></div></div>
 <div class="ov" id="themeOv"><div class="card"><button class="x">✕</button><h2>Pick your colors!</h2><div class="thg" id="thg"></div></div></div>
 <div class="ov" id="stickOv"><div class="card"><button class="x">✕</button><h2>My stickers</h2><div class="stg" id="stg"></div></div></div>
+<div id="songDrawer"><div class="dh"><b class="mk">🎬 Song Builder</b><span>Make parts A-D, then line them up into a song</span><button class="x" id="songX">✕</button></div><div id="pbar"></div></div>
+<div class="ov" id="moreOv"><div class="card"><button class="x">✕</button><h2 id="moreH">More fun</h2><div class="mg" id="moreG"></div><div class="mg2" id="moreG2"><button class="mi" id="presetB"><span class="emo">🎸</span>Styles</button><button class="mi" id="themeB"><span class="emo">🎨</span>Colors</button><button class="mi" id="shareM"><span class="emo">🔗</span>Share</button><button class="mi" id="songsM"><span class="emo">📂</span>My songs</button></div></div></div>
 <div class="ov" id="pickOv"><div class="card"><button class="x">✕</button><h2 id="pickH">Pick a sound</h2><div class="pg" id="pickG"></div></div></div>
 <div class="ov" id="show"><div id="party"><div class="beams"><i></i><i></i><i></i><i></i></div><div id="ball" class="emo">🪩</div><div id="floor"></div></div><button class="x" id="showX">✕</button><div id="showBy"></div><div id="showName"></div><div id="showBand"></div><div id="showBar"><i></i></div><div id="stickerWin"><span class="big1 emo" id="stickerE">🦄</span><b id="stickerT">You got a sticker!</b></div><div id="showEnd"><button class="big" id="showAgain">🔁 Again!</button><button class="big alt" id="showDone">👍 Done</button></div></div>
 <div class="ov" id="recvOv"><div class="card"><h2 id="recvH">Someone made you a song!</h2><div id="recvName" class="mk" style="font-size:34px;margin:6px 0 14px"></div><button class="big" id="recvPlay">▶ Listen!</button> <button class="big alt" id="recvRemix">🎛️ Remix it</button> <button class="big alt" id="recvNo">✕ No thanks</button></div></div>
