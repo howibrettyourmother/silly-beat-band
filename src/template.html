@@ -1,0 +1,233 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Silly Beat Band</title><meta name="theme-color" content="#2a1250">
+<meta name="description" content="Silly Beat Band - make beats with a band of silly critters!">
+<link rel="manifest" href="manifest.json"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png"><link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png"><link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png"><link rel="icon" href="favicon-32.png">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Beat Band">
+<style>
+@font-face{font-family:PM;src:url(data:font/woff2;base64,/*FONT*/) format('woff2');font-display:block}
+:root{--bg1:#1b0b3a;--bg2:#3b1670;--panel:#2a1250;--panel2:#3c1d6e;--ink:#fff;--acc:#ffd23f;--acc2:#2ee6d6;--hot:#ff4fa3;--cell:#ffffff1a;--cellb:#ffffff33;--grp:#ffffff0d;--stage1:#4a1d7a;--stage2:#24093f;--floor:#7a3b12}
+body.t-lava{--bg1:#2b0700;--bg2:#6b1a00;--panel:#4a1200;--panel2:#6a2208;--acc:#ffb703;--acc2:#ff6b35;--hot:#ff3d00;--stage1:#7a2000;--stage2:#2b0700;--floor:#3a1a0a}
+body.t-ocean{--bg1:#02203a;--bg2:#035a7a;--panel:#04314f;--panel2:#064a70;--acc:#ffe066;--acc2:#4cf2ff;--hot:#ff7a59;--stage1:#055f86;--stage2:#022a44;--floor:#c9a46a}
+body.t-space{--bg1:#000814;--bg2:#1d1146;--panel:#0d0b2a;--panel2:#1f1a4f;--acc:#f9f871;--acc2:#7cf5ff;--hot:#c77dff;--stage1:#240b52;--stage2:#04020f;--floor:#3a3a5a}
+body.zoe{--bg1:#ffd6ec;--bg2:#ff9fd0;--panel:#ff7fbf;--panel2:#ff9fd0;--ink:#fff;--acc:#fff36b;--acc2:#b388ff;--hot:#ff2e97;--cell:#ffffff66;--cellb:#ffffffaa;--grp:#ffffff30;--stage1:#ffb3dc;--stage2:#ff7fbf;--floor:#ffe1f0}
+body.zoe.t-unicorn{--bg1:#ead9ff;--bg2:#c7a6ff;--panel:#9d72ff;--panel2:#b892ff;--acc:#fff36b;--acc2:#ff8ad8;--hot:#ff4fd1;--stage1:#d5bbff;--stage2:#9d72ff;--floor:#fff0ff}
+body.zoe.t-rainbow{--bg1:#fff3b0;--bg2:#ffb3c6;--panel:#ff8fab;--panel2:#ffc2d1;--acc:#ffef5a;--acc2:#5ec8ff;--hot:#ff4f79;--stage1:#bde0fe;--stage2:#a2d2ff;--floor:#ffd6a5}
+body.zoe.t-mermaid{--bg1:#c8fff4;--bg2:#7de2d1;--panel:#33c3b0;--panel2:#5fd8c6;--acc:#ffe066;--acc2:#ff8fd8;--hot:#ff5cb8;--stage1:#a0f0e4;--stage2:#33c3b0;--floor:#ffe8c2}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:radial-gradient(ellipse at 50% 0%,var(--bg2),var(--bg1) 70%) fixed;background-color:var(--bg1)}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;touch-action:manipulation}
+.mk{font-family:PM,"Marker Felt","Chalkboard SE","Comic Sans MS",cursive;font-weight:400}
+.emo{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;line-height:1}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+/* top bar */
+#top{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:6px 10px 6px 56px;min-height:64px;position:relative;z-index:4}
+.tb{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:58px;height:54px;border-radius:16px;background:var(--panel);box-shadow:0 4px 0 #0005,inset 0 2px 0 #fff3;font-size:12px;font-weight:700;padding:0 8px;line-height:1.05;transition:transform .08s}
+.tb .emo{font-size:24px;margin-bottom:2px}
+.tb:active,.tb.press{transform:translateY(3px);box-shadow:0 1px 0 #0005}
+.tb.on{background:var(--acc);color:#3a1d00}
+#play{min-width:74px;background:#22c55e;font-size:13px}#play .emo{font-size:30px}#play.on{background:#ef4444;color:#fff}
+#tempo{display:flex;align-items:center;gap:6px;background:var(--panel);border-radius:16px;height:54px;padding:0 10px;box-shadow:0 4px 0 #0005}
+#tempo input{width:120px;accent-color:var(--acc)}#tempo b{font-size:13px;min-width:34px;text-align:center}
+#tempo .emo{font-size:20px}
+#ztempo{display:none;gap:6px}#ztempo .tb{min-width:58px}
+#tabs{display:flex;gap:6px;margin:0 auto;background:#0003;border-radius:20px;padding:4px}
+#tabs .tb{min-width:76px;box-shadow:none;background:transparent}#tabs .tb.on{background:var(--acc);color:#3a1d00;box-shadow:0 3px 0 #0004}
+#dad{background:linear-gradient(180deg,#ffe14d,#ff9f1c);color:#4a1d00;min-width:132px;font-size:16px;animation:dadp 2.4s ease-in-out infinite}#dad .emo{font-size:26px}
+@keyframes dadp{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg) scale(1.04)}}
+#mode{background:linear-gradient(180deg,#ff8ad8,#b388ff);min-width:66px}
+body.zoe #mode{background:linear-gradient(180deg,#4ade80,#16a34a)}
+.scr{flex:1 1 auto;display:none;flex-direction:column;min-height:0;position:relative}
+.scr.on{display:flex}
+/* stage */
+#stage{flex:0 0 auto;height:clamp(130px,22vh,190px);margin:0 10px;border-radius:22px;position:relative;overflow:hidden;display:flex;
+ background:linear-gradient(180deg,var(--stage1),var(--stage2));box-shadow:inset 0 -18px 0 var(--floor),inset 0 -22px 0 #0003,0 6px 16px #0005}
+body.zoe #stage{height:clamp(150px,27vh,220px)}
+#stageL{flex:1;position:relative}
+#bench{flex:0 0 auto;width:clamp(150px,19vw,230px);position:relative;background:#0003;border-left:4px dashed #fff4;display:flex;flex-wrap:wrap;align-content:flex-start;gap:4px;padding:22px 6px 6px}
+#bench:before{content:"Waiting room";position:absolute;top:3px;left:0;right:0;text-align:center;font-size:12px;font-weight:800;opacity:.75}
+body.zoe #bench:before{content:"Friends"}
+.lights{position:absolute;inset:0;pointer-events:none;opacity:.0;transition:opacity .25s}
+.lights i{position:absolute;top:-20%;width:34%;height:140%;background:linear-gradient(180deg,#fff8,transparent 70%);filter:blur(6px);transform-origin:50% 0;mix-blend-mode:screen}
+.lights i:nth-child(1){left:2%;transform:rotate(-18deg);background:linear-gradient(180deg,#ff4fa399,transparent 70%)}
+.lights i:nth-child(2){left:33%;background:linear-gradient(180deg,#ffd23f99,transparent 70%)}
+.lights i:nth-child(3){left:64%;transform:rotate(18deg);background:linear-gradient(180deg,#2ee6d699,transparent 70%)}
+#stage.live .lights{opacity:.6;animation:lsw 4s ease-in-out infinite}
+#stage.boom .lights{opacity:1}
+@keyframes lsw{50%{filter:hue-rotate(90deg)}}
+.cr{position:absolute;bottom:14px;width:72px;margin-left:-36px;text-align:center;touch-action:none;transition:left .35s cubic-bezier(.3,1.5,.5,1),opacity .2s;z-index:2}
+.cr .bd{font-size:54px;display:block;transform-origin:50% 100%;filter:drop-shadow(0 4px 2px #0006)}
+body.zoe .cr{width:96px;margin-left:-48px}body.zoe .cr .bd{font-size:72px}
+.cr .nm{font-size:11px;font-weight:800;background:#0006;border-radius:8px;padding:1px 6px;white-space:nowrap;display:inline-block}
+.cr .zz{position:absolute;top:-6px;right:0;font-size:22px;display:none;animation:zz 1.6s ease-in-out infinite}
+.cr.mute .bd{filter:grayscale(.8) brightness(.7);transform:rotate(-8deg) scale(.92)}.cr.mute .zz{display:block}
+@keyframes zz{50%{transform:translate(4px,-8px)}}
+.cr.hit .bd{animation:hop .28s ease-out}
+@keyframes hop{0%{transform:scale(1.18,.78)}40%{transform:translateY(-18px) scale(.92,1.12)}100%{transform:none}}
+#stage.live .cr:not(.mute):not(.hit) .bd{animation:sway var(--beat,.5s) ease-in-out infinite alternate}
+@keyframes sway{0%{transform:rotate(-5deg)}100%{transform:rotate(5deg) translateY(-3px)}}
+.bch{position:relative;width:52px;text-align:center;touch-action:none}
+.bch .bd{font-size:38px;display:block;filter:drop-shadow(0 3px 2px #0006)}.bch .nm{font-size:9px;font-weight:800;opacity:.85;white-space:nowrap}
+body.zoe .bch{width:64px}body.zoe .bch .bd{font-size:48px}
+.bch:after{content:"";position:absolute;inset:-2px;border-radius:12px;animation:wig 3s ease-in-out infinite;pointer-events:none}
+.bch .bd{animation:wig 2.6s ease-in-out infinite}@keyframes wig{0%,85%,100%{transform:none}90%{transform:rotate(-10deg)}95%{transform:rotate(10deg)}}
+.drag{position:fixed;z-index:50;pointer-events:none;font-size:66px;margin:-40px 0 0 -33px;filter:drop-shadow(0 10px 8px #0007);transform:scale(1.15) rotate(-8deg)}
+#stage.drop{box-shadow:inset 0 0 0 5px var(--acc),inset 0 -18px 0 var(--floor),0 6px 16px #0005}
+.note{position:absolute;pointer-events:none;font-size:22px;animation:nf 1s ease-out forwards;z-index:3}
+@keyframes nf{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--dx,10px),-70px) scale(1.2) rotate(20deg)}}
+#hint{position:absolute;left:50%;top:6px;transform:translateX(-50%);font-size:12px;font-weight:700;background:#0005;border-radius:10px;padding:2px 10px;white-space:nowrap;pointer-events:none;opacity:.9}
+/* grid */
+#gridWrap{flex:1 1 auto;min-height:0;padding:8px 10px 10px;display:flex;flex-direction:column}
+#colhead{display:flex;gap:4px;padding-left:calc(var(--hw) + 4px);height:16px;flex:0 0 auto}body.zoe #colhead{gap:8px;padding-left:calc(var(--hw) + 8px)}
+#colhead span{flex:1;text-align:center;font-size:11px;font-weight:800;opacity:.55;transition:transform .1s}
+#colhead span.cur{opacity:1;color:var(--acc);transform:scale(1.6)}
+body.zoe #colhead{height:30px}body.zoe #colhead span{font-size:22px;opacity:.8;font-family:PM,"Marker Felt",cursive;color:#fff;text-shadow:0 2px 0 #0003}
+#gridWrap{--hw:118px}body.zoe #gridWrap{--hw:150px}
+#grid{flex:1;display:flex;flex-direction:column;gap:4px;min-height:0}
+body.zoe #grid{gap:8px}
+.row{flex:1;display:flex;gap:4px;min-height:0;transition:opacity .2s}
+body.zoe .row{gap:8px}
+.row.off .cell{opacity:.45}
+.rh{flex:0 0 var(--hw);display:flex;align-items:center;gap:6px;border-radius:12px;background:var(--panel);padding:0 6px;box-shadow:0 3px 0 #0004;position:relative;overflow:hidden}
+.rh .emo{font-size:clamp(20px,3.6vh,30px)}.rh b{font-size:13px;line-height:1.05}
+.rh small{display:block;font-size:10px;opacity:.75;font-weight:600}
+body.zoe .rh{border-radius:22px}body.zoe .rh .emo{font-size:clamp(36px,7vh,56px)}body.zoe .rh b{font-size:18px}
+.rh .pick{position:absolute;right:3px;top:3px;font-size:16px;background:#fff3;border-radius:8px;padding:1px 3px}
+.rh.zz:after{content:"💤";position:absolute;right:4px;bottom:2px;font-size:14px}
+.cell{flex:1;border-radius:10px;background:var(--cell);box-shadow:inset 0 0 0 2px var(--cellb);position:relative;display:flex;align-items:center;justify-content:center;font-size:18px;transition:background .08s,transform .08s;touch-action:none}
+.cell.g{background:color-mix(in srgb,var(--cell),#fff 6%)}
+.cell.b4{margin-left:6px}
+body.zoe .cell{border-radius:22px}
+.cell.on{background:var(--rc);box-shadow:inset 0 -5px 0 #0003,inset 0 2px 0 #fff6,0 2px 6px #0004}
+.cell.on i{position:absolute;left:18%;right:18%;height:5px;border-radius:3px;background:#fff;opacity:.9;bottom:calc(10% + var(--lv) * 12%)}
+.cell .ce{font-size:clamp(14px,2.8vh,24px)}
+body.zoe .cell .ce{font-size:clamp(28px,5.5vh,46px)}
+.cell.ph{box-shadow:inset 0 0 0 3px var(--acc),0 0 12px var(--acc)}
+.cell.on.ph{transform:scale(1.08);filter:brightness(1.25)}
+.cell.tap{animation:ctap .25s ease-out}@keyframes ctap{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:none}}
+/* keys */
+#keysTop{display:flex;gap:8px;align-items:center;padding:6px 12px;flex-wrap:wrap}
+.ib{display:flex;flex-direction:column;align-items:center;min-width:74px;padding:6px 8px;border-radius:16px;background:var(--panel);box-shadow:0 4px 0 #0005;font-size:12px;font-weight:800}
+.ib .emo{font-size:28px}.ib.on{background:var(--acc);color:#3a1d00;transform:translateY(-2px)}
+body.zoe .ib{min-width:96px;font-size:15px}body.zoe .ib .emo{font-size:40px}
+#singer{margin-left:auto;font-size:60px;transform-origin:50% 100%}
+#singer.hit{animation:hop .25s ease-out}
+#keys{flex:1;display:flex;gap:6px;padding:4px 12px 14px;min-height:0;position:relative;touch-action:none}
+.key{flex:1;border-radius:18px 18px 26px 26px;position:relative;box-shadow:inset 0 -14px 0 #0003,inset 0 3px 0 #fff7,0 6px 0 #0005;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:14px;font-weight:900;font-size:20px;color:#fff;text-shadow:0 2px 0 #0004;transition:transform .05s}
+.key.dn{transform:translateY(5px) scale(.97);filter:brightness(1.3);box-shadow:inset 0 -6px 0 #0003,0 1px 0 #0005,0 0 26px #fff}
+.key .kl{font-family:PM,"Marker Felt",cursive;font-size:30px}.key .kp{font-size:44px}
+body:not(.zoe) .key .kp{display:none}
+#kparts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+/* studio */
+#studio{flex:1;display:flex;gap:16px;padding:10px 16px 16px;min-height:0}
+.panel{background:var(--panel);border-radius:22px;padding:14px;box-shadow:0 6px 0 #0005;display:flex;flex-direction:column;align-items:center;gap:10px}
+#micP{flex:1.1}#fxP{flex:1}
+#rec{width:min(28vh,200px);height:min(28vh,200px);border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,#e11d48 60%,#9f1239);box-shadow:0 8px 0 #7f1d1d,0 0 0 8px #fff3;font-size:64px;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#fff;font-weight:900}
+#rec small{font-size:15px}
+#rec.rec{animation:recp .6s ease-in-out infinite;background:radial-gradient(circle at 35% 30%,#fff,#ff4d6d 50%,#c9184a)}
+@keyframes recp{50%{transform:scale(1.06);box-shadow:0 8px 0 #7f1d1d,0 0 0 18px #ff4d6d66}}
+#meter{width:100%;height:70px;border-radius:14px;background:#0004}
+#micMsg{font-size:15px;text-align:center;min-height:20px;max-width:420px}
+.fxg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;width:100%}
+.fxb{padding:10px;border-radius:18px;background:var(--panel2);box-shadow:0 4px 0 #0005;font-size:16px;font-weight:800;display:flex;flex-direction:column;align-items:center}
+.fxb .emo{font-size:40px}.fxb.on{background:var(--acc);color:#3a1d00}
+.chops{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chop{padding:8px 12px;border-radius:14px;background:#fff2;font-weight:800;font-size:15px}.chop.on{background:var(--acc2);color:#022}
+.big{font-size:20px;font-weight:900;padding:12px 20px;border-radius:18px;background:#22c55e;box-shadow:0 5px 0 #0005;color:#fff}
+.big.alt{background:var(--panel2)}.big:active{transform:translateY(3px);box-shadow:0 2px 0 #0005}
+#polly{font-size:min(20vh,150px);margin-top:auto;transform-origin:50% 100%;filter:drop-shadow(0 8px 4px #0006)}#polly.hit{animation:hop .3s ease-out}body.zoe #polly{font-size:0}body.zoe #polly:after{content:'🐷';font-size:min(20vh,150px)}
+#pollySay{font-size:24px;color:var(--acc);min-height:30px}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;background:#0009;padding:16px}
+.ov.on{display:flex;animation:ovin .2s ease-out}@keyframes ovin{from{opacity:0}}
+.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border-radius:26px;padding:18px 22px;max-width:min(94vw,860px);max-height:92vh;overflow:auto;box-shadow:0 10px 0 #0006,0 20px 50px #000a;text-align:center;position:relative;animation:pop .35s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{from{transform:scale(.6)}}
+.card h2{margin:0 0 10px;font-size:34px;font-family:PM,"Marker Felt",cursive;font-weight:400;color:var(--acc);text-shadow:0 3px 0 #0005}
+.x{position:absolute;right:10px;top:8px;width:44px;height:44px;border-radius:50%;background:#0004;font-size:22px}
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pc{border-radius:20px;padding:14px 8px;background:#fff2;box-shadow:0 5px 0 #0005;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:900;font-size:18px}
+.pc .emo{font-size:54px}.pc small{font-weight:600;font-size:12px;opacity:.8}
+.songs{display:flex;flex-direction:column;gap:8px;margin:10px 0;max-height:42vh;overflow:auto;text-align:left}
+.sr{display:flex;align-items:center;gap:8px;background:#fff1;border-radius:16px;padding:6px 8px}
+.sr b{flex:1;font-size:18px}.sr button{font-size:24px;width:48px;height:44px;border-radius:12px;background:#fff2}
+.nmrow{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+#nameIn{font:22px system-ui;padding:10px 12px;border-radius:14px;border:0;width:min(60vw,380px);user-select:text;-webkit-user-select:text}
+.zn{padding:12px 16px;border-radius:18px;background:#fff3;font-weight:900;font-size:20px}.zn.on{background:var(--acc);color:#3a1d00}
+#codeBox,#shareUrl{font:16px ui-monospace,Menlo,monospace;word-break:break-all;background:#0004;border-radius:12px;padding:10px;margin:8px 0;user-select:text;-webkit-user-select:text}
+#codeIn{font:18px ui-monospace,Menlo,monospace;width:100%;padding:10px;border-radius:12px;border:0;user-select:text;-webkit-user-select:text}
+.thg{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.th{width:120px;height:90px;border-radius:18px;box-shadow:0 5px 0 #0005,inset 0 0 0 3px #fff6;font-weight:900;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:14px;text-shadow:0 2px 0 #0006}
+/* Dad listen */
+#show{background:radial-gradient(ellipse at 50% 30%,var(--bg2),#000 80%);flex-direction:column;z-index:30}
+#showName{font-family:PM,"Marker Felt",cursive;font-size:min(9vh,64px);color:var(--acc);text-shadow:0 5px 0 #0007;text-align:center;margin:0 20px}
+#showBy{font-size:22px;font-weight:800;opacity:.9;margin-bottom:10px}
+#showBand{position:relative;display:flex;gap:2vw;align-items:flex-end;justify-content:center;flex-wrap:wrap;max-width:96vw;min-height:30vh}
+#showBand .cr{position:relative;left:auto!important;margin:0;width:auto;bottom:auto}#showBand .cr .bd{font-size:min(14vh,110px)}
+#show.live .cr:not(.hit) .bd{animation:sway var(--beat,.5s) ease-in-out infinite alternate}
+#showBar{width:min(70vw,600px);height:14px;border-radius:7px;background:#fff3;margin:18px 0;overflow:hidden}#showBar i{display:block;height:100%;width:0;background:var(--acc)}
+#showEnd{display:none;gap:10px}
+#splash{z-index:40;background:radial-gradient(ellipse at 50% 40%,var(--bg2),var(--bg1));flex-direction:column}
+#logo{font-family:PM,"Marker Felt",cursive;font-size:min(13vh,96px);line-height:.95;text-align:center;color:var(--acc);text-shadow:0 6px 0 var(--hot),0 12px 24px #0008;transform:rotate(-3deg);animation:lg 1.2s ease-in-out infinite alternate}
+@keyframes lg{to{transform:rotate(2deg) scale(1.04)}}
+#splBand{font-size:min(11vh,80px);margin:16px 0;letter-spacing:6px}#splBand span{display:inline-block;animation:hop .5s ease-in-out infinite alternate}
+#splGo{font-size:30px;padding:16px 36px;border-radius:24px;background:#22c55e;box-shadow:0 7px 0 #0006;font-weight:900;animation:dadp 1.4s ease-in-out infinite}
+#toast{position:fixed;left:50%;top:76px;transform:translateX(-50%) scale(.6);z-index:60;background:#000c;color:#fff;font-weight:800;font-size:20px;padding:10px 20px;border-radius:18px;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap}
+#toast.on{opacity:1;transform:translateX(-50%) scale(1)}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:55}
+#rot{position:fixed;inset:0;z-index:70;background:var(--bg1);display:none;align-items:center;justify-content:center;flex-direction:column;font-size:24px;font-weight:800;text-align:center}
+@media (orientation:portrait) and (max-width:900px){#rot{display:flex}}
+#ver{position:fixed;right:6px;bottom:2px;font-size:9px;opacity:.35;z-index:3;pointer-events:none}
+body.zoe .tb{border-radius:20px}
+body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6;border-radius:12px}
+@media (max-width:1120px){#top{gap:6px;padding-right:8px}.tb{min-width:50px;padding:0 6px;font-size:11px}#tempo{padding:0 8px;gap:4px}#tempo input{width:88px}#tabs .tb{min-width:60px}#dad{min-width:112px;font-size:14px}#play{min-width:64px}}
+</style></head><body>
+<div id="app">
+ <div id="top">
+  <button class="tb" id="play"><span class="emo">▶️</span>Play</button>
+  <div id="tempo"><span class="emo">🐢</span><input id="bpm" type="range" min="60" max="180" step="2" value="110" aria-label="tempo"><span class="emo">🐇</span><b id="bpmv">110</b></div>
+  <div id="ztempo"><button class="tb" data-t="84"><span class="emo">🐢</span>Slow</button><button class="tb" data-t="108"><span class="emo">🐰</span>Hop</button><button class="tb" data-t="132"><span class="emo">🚀</span>Zoom</button></div>
+  <div id="tabs"><button class="tb on" data-s="beat"><span class="emo">🥁</span>Beat</button><button class="tb" data-s="keys"><span class="emo">🎹</span>Keys</button><button class="tb" data-s="studio"><span class="emo">🎤</span>Studio</button></div>
+  <button class="tb" id="presetB"><span class="emo">🎸</span>Styles</button>
+  <button class="tb" id="dad"><span class="emo">⭐</span><span class="mk" id="dadL">Dad, listen!</span></button>
+  <button class="tb" id="saveB"><span class="emo">📂</span>My songs</button>
+  <button class="tb" id="themeB"><span class="emo">🎨</span>Colors</button>
+  <button class="tb" id="mode"><span class="emo" id="modeE">🦄</span><span id="modeL">Zoe</span></button>
+ </div>
+ <div class="scr on" id="s-beat">
+  <div id="stage"><div class="lights"><i></i><i></i><i></i></div><div id="stageL"><div id="hint">Drag critters onto the stage · tap one to hush it</div></div><div id="bench"></div></div>
+  <div id="gridWrap"><div id="colhead"></div><div id="grid"></div></div>
+ </div>
+ <div class="scr" id="s-keys">
+  <div id="keysTop"></div>
+  <div id="keys"><div id="kparts"></div></div>
+ </div>
+ <div class="scr" id="s-studio">
+  <div id="studio">
+   <div class="panel" id="micP"><h2 class="mk" style="margin:0;font-size:30px;font-weight:400;color:var(--acc)">Silly Studio</h2>
+    <button id="rec"><span class="emo">🎤</span><small id="recL">Tap to record</small></button>
+    <canvas id="meter" width="600" height="70"></canvas><div id="micMsg">Say something silly! (up to 3 seconds)</div>
+    <div class="chops" id="chops"></div></div>
+   <div class="panel" id="fxP"><div class="fxg" id="fxg"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="big alt" id="hear">🔊 Hear it</button><button class="big" id="toBeat">🦜 Put it in my beat!</button></div><div id="polly" class="emo">🦜</div><div id="pollySay" class="mk"></div></div>
+  </div>
+ </div>
+</div>
+<div class="ov" id="presetOv"><div class="card"><button class="x">✕</button><h2>Pick a starting song!</h2><div class="pg" id="pg"></div><div style="margin-top:12px"><button class="big alt" id="clearB">🧹 Start empty</button></div></div></div>
+<div class="ov" id="songsOv"><div class="card"><button class="x">✕</button><h2>My songs</h2>
+ <div class="nmrow" id="nmrow"></div><div class="nmrow" style="margin-top:8px"><button class="big" id="doSave">💾 Save this song</button><button class="big alt" id="shareB">🔗 Share code</button><button class="big alt" id="codeB">🔑 Enter a code</button></div>
+ <div id="codeWrap" style="display:none;margin-top:8px"><input id="codeIn" placeholder="Paste a song code or link" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="big" id="codeGo" style="margin-top:6px">▶ Load it</button><div id="codeMsg" style="min-height:22px"></div></div>
+ <div class="songs" id="songList"></div></div></div>
+<div class="ov" id="shareOv"><div class="card"><button class="x">✕</button><h2>Share your song!</h2><div>Send this link to Dad (or Mom!). It opens your song in Silly Beat Band.</div><div id="shareUrl"></div><div>Short code:</div><div id="codeBox"></div>
+ <div><button class="big" id="copyB">📋 Copy link</button><button class="big alt" id="shareSys" style="display:none">📤 Share</button></div></div></div>
+<div class="ov" id="themeOv"><div class="card"><button class="x">✕</button><h2>Pick your colors!</h2><div class="thg" id="thg"></div></div></div>
+<div class="ov" id="pickOv"><div class="card"><button class="x">✕</button><h2 id="pickH">Pick a sound</h2><div class="pg" id="pickG"></div></div></div>
+<div class="ov" id="show"><button class="x" id="showX">✕</button><div id="showBy"></div><div id="showName"></div><div id="showBand"></div><div id="showBar"><i></i></div><div id="showEnd"><button class="big" id="showAgain">🔁 Again!</button><button class="big alt" id="showDone">👍 Done</button></div></div>
+<div class="ov" id="recvOv"><div class="card"><h2 id="recvH">Someone made you a song!</h2><div id="recvName" class="mk" style="font-size:34px;margin:6px 0 14px"></div><button class="big" id="recvPlay">▶ Listen!</button> <button class="big alt" id="recvRemix">🎛️ Remix it</button> <button class="big alt" id="recvNo">✕ No thanks</button></div></div>
+<div class="ov on" id="splash"><div id="logo">Silly<br>Beat Band</div><div id="splBand" class="emo"></div><button id="splGo" class="mk">▶ Let's jam!</button></div>
+<div id="rot"><div class="emo" style="font-size:80px">📱↻</div>Turn the iPad sideways!</div>
+<canvas id="fx"></canvas><div id="toast"></div><div id="ver">v/*VER*/</div>
+<script>
+/*GAME*/
+</script>
+</body></html>

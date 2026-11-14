@@ -1,0 +1,247 @@
+{
+ "note": "Meme kit manifest. clips[]: {id,file (relative to this folder),label,emoji,gentle,alex}. gentle=true shows in Zoe mode; alex=false hides it from big-kid mode. All CC0 (Freesound, verified on each page). A second manifest at sfx/family-only/manifest.json is merged in if present (same format; Freesound-style {name,file} also works).",
+ "clips": [
+  {
+   "id": "boom_hit",
+   "file": "boom_hit.mp3",
+   "label": "Boom!",
+   "emoji": "💥",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/XHALE303/sounds/535615/",
+   "author": "XHALE303"
+  },
+  {
+   "id": "metal_pipe",
+   "file": "metal_pipe.mp3",
+   "label": "Metal pipe",
+   "emoji": "🔩",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/Anzbot/sounds/562162/",
+   "author": "Anzbot"
+  },
+  {
+   "id": "bonk",
+   "file": "bonk.mp3",
+   "label": "Bonk",
+   "emoji": "🔨",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/reevesT/sounds/857868/",
+   "author": "reevesT"
+  },
+  {
+   "id": "airhorn",
+   "file": "airhorn.mp3",
+   "label": "Air horn",
+   "emoji": "📯",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/jacksonacademyashmore/sounds/414208/",
+   "author": "jacksonacademyashmore"
+  },
+  {
+   "id": "sad_trombone",
+   "file": "sad_trombone.mp3",
+   "label": "Sad trombone",
+   "emoji": "🎺",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/kirbydx/sounds/175409/",
+   "author": "kirbydx"
+  },
+  {
+   "id": "wrong_buzzer",
+   "file": "wrong_buzzer.mp3",
+   "label": "Wrong buzzer",
+   "emoji": "❌",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/KevinVG207/sounds/331912/",
+   "author": "KevinVG207"
+  },
+  {
+   "id": "ba_dum_tss",
+   "file": "ba_dum_tss.mp3",
+   "label": "Ba-dum-tss",
+   "emoji": "🥁",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/gefscream/sounds/470195/",
+   "author": "gefscream"
+  },
+  {
+   "id": "record_scratch",
+   "file": "record_scratch.mp3",
+   "label": "Record scratch",
+   "emoji": "💿",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/ludvique/sounds/71853/",
+   "author": "ludvique"
+  },
+  {
+   "id": "coin",
+   "file": "coin.mp3",
+   "label": "Coin",
+   "emoji": "🪙",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/timgormly/sounds/162805/",
+   "author": "timgormly"
+  },
+  {
+   "id": "oneup",
+   "file": "oneup.mp3",
+   "label": "1-Up",
+   "emoji": "🍄",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/ash_rez/sounds/518888/",
+   "author": "ash_rez"
+  },
+  {
+   "id": "slide_whistle",
+   "file": "slide_whistle.mp3",
+   "label": "Slide whistle",
+   "emoji": "🎢",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/SamuelGremaud/sounds/517633/",
+   "author": "SamuelGremaud"
+  },
+  {
+   "id": "horn2",
+   "file": "horn2.mp3",
+   "label": "Clown horn",
+   "emoji": "🤡",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/FunWithSound/sounds/608085/",
+   "author": "FunWithSound"
+  },
+  {
+   "id": "cartoon_scream",
+   "file": "cartoon_scream.mp3",
+   "label": "Cartoon scream",
+   "emoji": "😱",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/el_boss/sounds/751702/",
+   "author": "el_boss"
+  },
+  {
+   "id": "wow",
+   "file": "wow.mp3",
+   "label": "WOW!",
+   "emoji": "🤩",
+   "gentle": false,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/NicknameLarry/sounds/508898/",
+   "author": "NicknameLarry"
+  },
+  {
+   "id": "boing",
+   "file": "boing.mp3",
+   "label": "Boing",
+   "emoji": "🌀",
+   "gentle": true,
+   "alex": true,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/se2001/sounds/543641/",
+   "author": "se2001"
+  },
+  {
+   "id": "kidwow",
+   "file": "../wow.mp3",
+   "label": "Wow!",
+   "emoji": "😮",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/NicknameLarry/sounds/487519/",
+   "author": "NicknameLarry"
+  },
+  {
+   "id": "toot",
+   "file": "toot.mp3",
+   "label": "Toot",
+   "emoji": "💨",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/FlashTrauma/sounds/398284/",
+   "author": "FlashTrauma"
+  },
+  {
+   "id": "boing2",
+   "file": "boing2.mp3",
+   "label": "Boing boing",
+   "emoji": "🦘",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/magnuswaker/sounds/540790/",
+   "author": "magnuswaker"
+  },
+  {
+   "id": "quack",
+   "file": "quack.mp3",
+   "label": "Quack",
+   "emoji": "🦆",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/martian/sounds/547601/",
+   "author": "martian"
+  },
+  {
+   "id": "duck",
+   "file": "duck.mp3",
+   "label": "Squeaky duck",
+   "emoji": "🐤",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/csaszi/sounds/350917/",
+   "author": "csaszi"
+  },
+  {
+   "id": "bubbles",
+   "file": "bubbles.mp3",
+   "label": "Bubbles",
+   "emoji": "🫧",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/florianreichelt/sounds/683100/",
+   "author": "florianreichelt"
+  },
+  {
+   "id": "sparkle",
+   "file": "../sparkle.mp3",
+   "label": "Sparkle",
+   "emoji": "✨",
+   "gentle": true,
+   "alex": false,
+   "license": "CC0 1.0",
+   "source": "https://freesound.org/people/newagesoup/sounds/351408/",
+   "author": "newagesoup"
+  }
+ ]
+}
