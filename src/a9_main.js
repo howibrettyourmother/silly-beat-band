@@ -57,11 +57,11 @@ $('mode').addEventListener('click',function(){unlock();stop();setMode(S.mode==='
 var showOn=false,showEls={},barsPlayedVis=0;
 function openShow(){unlock();stop();var B=$('showBand');B.innerHTML='';showEls={};var band=ROWS().filter(function(r){return S.song.band[r.id]===1&&S.song.pats.some(function(pt){return pt[r.id].some(Boolean)})});
  if(!band.length){toast('Put some critters in the band first!');return}
- band.forEach(function(r){var d=document.createElement('div');d.className='cr';d.innerHTML='<span class="bd emo">'+r.e+'</span><span class="nm">'+r.n+'</span>';B.appendChild(d);showEls[r.id]=d});
+ band.forEach(function(r){var d=document.createElement('div');d.className='cr';d.innerHTML='<span class="bd">'+critOf(r)+'</span><span class="nm">'+r.n+'</span>';B.appendChild(d);showEls[r.id]=d});
  $('showName').textContent='"'+(S.song.name||genName())+'"';if(!S.song.name)S.song.name=$('showName').textContent.slice(1,-1);$('showBy').textContent='🎤 '+(S.guest?'A song made just for you':'A song by '+(S.mode==='zoe'?'Zoe':KNAME))+'!';
- $('showEnd').style.display='none';$('showBar').firstChild.style.width='0';buildParty();open('show');showOn=true;barsPlayedVis=0;smp('cheer',0,{dest:BUS.show,gain:.45});
+ $('showEnd').style.display='none';$('stickerWin').classList.remove('on');$('showBar').firstChild.style.width='0';buildParty();open('show');showOn=true;barsPlayedVis=0;smp('cheer',0,{dest:BUS.show,gain:.45});
  setTimeout(function(){if(!showOn)return;if(S.song.chain.length>1)S.whole=true;var sb=songMode()?S.song.chain.length*Math.max(1,Math.ceil(8/S.song.chain.length)):P().prog.length*2;showBars=sb;start(true);showBars=sb},900)}
-function showEnd(){stop();if(!showOn)return;$('showBar').firstChild.style.width='100%';confetti(innerWidth*.3,innerHeight*.6,90);confetti(innerWidth*.7,innerHeight*.6,90);$('showEnd').style.display='flex'}
+function showEnd(){stop();if(!showOn)return;$('showBar').firstChild.style.width='100%';if(S.mode==='zoe'&&!S.guest)setTimeout(awardSticker,500);confetti(innerWidth*.3,innerHeight*.6,90);confetti(innerWidth*.7,innerHeight*.6,90);$('showEnd').style.display='flex'}
 function endShow(){showOn=false;stop();close('show');showEls={};if(S.guest){S.guest=false;if(S.guestBack){var gb=S.guestBack;S.mode=gb.mode;S.song=gb.song;setMode(gb.mode,true,gb.song)}S.guestBack=null;open('recvOv')}}
 $('dad').addEventListener('click',function(){openShow()});$('showAgain').addEventListener('click',function(){openShow()});$('showDone').addEventListener('click',endShow);
 /* opening a shared song link */
@@ -74,11 +74,11 @@ $('recvNo').addEventListener('click',function(){close('recvOv');clearHash();setM
 function clearHash(){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
 /* boot */
 (function boot(){var pr=LS.get('prefs',null);if(pr&&pr.theme)S.theme=pr.theme;var m=KID==='zoe'?'zoe':(pr&&pr.mode)||'alex';if(/[?&]mode=zoe\b/.test(Q))m='zoe';
- memeSel=LS.get('memeSel',memeSel);mk();setMode(m);
- var sb=$('splBand');(m==='zoe'?['🐻','🐱','🦄','🐥','🐷']:['🐘','🐸','🐐','🐔','🦨','🦛']).forEach(function(e,i){var s=document.createElement('span');s.textContent=e;s.style.animationDelay=(i*0.12)+'s';sb.appendChild(s)});
+ memeSel=LS.get('memeSel',memeSel);mk();buildFloat();setMode(m);
+ var sb=$('splBand');(m==='zoe'?['bear','cat','unicorn','chick','pig']:['elephant','frog','goat','chicken','skunk','hippo']).forEach(function(e,i){var s=document.createElement('span');s.innerHTML=crit(e);s.style.animationDelay=(i*0.12)+'s';sb.appendChild(s)});
  var loaded=loadAll().then(function(){buildGrid()});loadVoice();requestAnimationFrame(frame);
  $('splGo').addEventListener('click',function(){unlock();close('splash');smp('sparkle',0,{dest:BUS.ui,gain:.8});confetti(innerWidth/2,innerHeight/2,70);if(!checkRecv()){loaded.then(function(){setTimeout(function(){if(!playing&&S.scr==='beat')start()},400)})}});
  window.hubSave=function(){if(S.guest)return;try{LS.set('cur_'+S.mode,encSong(S.song,S.mode))}catch(e){}};addEventListener('pagehide',window.hubSave);
  document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){window.hubSave();if(recState===1)recStop()}});
  document.addEventListener('gesturestart',function(e){e.preventDefault()});document.addEventListener('dblclick',function(e){e.preventDefault()});
- window.__SBB={S:S,start:start,stop:stop,goScr:goScr,setMode:setMode,enc:function(){return encSong(S.song,S.mode)},dec:decSong,openShow:openShow,BUF:BUF,MEME:MEME,memeList:memeList,AC:function(){return AC},ready:function(){return ready},VQlen:function(){return VQ.length},peak:function(){if(!METER)return 0;var a=new Float32Array(METER.fftSize);METER.getFloatTimeDomainData(a);var m=0;for(var i=0;i<a.length;i++)m=Math.max(m,Math.abs(a[i]));return m},setEd:setEd,applySong:applySong,fixRows:fixRows,rawChop:function(){return RAW?RAW.chop||'mic':null},meter:function(){return METER},preset:function(id){S.song=fromPreset(id,S.mode);applySong()},songMode:songMode,keyRecord:keyRecord,setRec:function(v){kRec=v},NG:NG,openShow:openShow}})();
+ window.__SBB={S:S,start:start,stop:stop,goScr:goScr,setMode:setMode,enc:function(){return encSong(S.song,S.mode)},dec:decSong,openShow:openShow,BUF:BUF,MEME:MEME,memeList:memeList,AC:function(){return AC},ready:function(){return ready},VQlen:function(){return VQ.length},peak:function(){if(!METER)return 0;var a=new Float32Array(METER.fftSize);METER.getFloatTimeDomainData(a);var m=0;for(var i=0;i<a.length;i++)m=Math.max(m,Math.abs(a[i]));return m},setEd:setEd,stickers:stickers,crit:crit,applySong:applySong,fixRows:fixRows,rawChop:function(){return RAW?RAW.chop||'mic':null},meter:function(){return METER},preset:function(id){S.song=fromPreset(id,S.mode);applySong()},songMode:songMode,keyRecord:keyRecord,setRec:function(v){kRec=v},NG:NG,openShow:openShow}})();

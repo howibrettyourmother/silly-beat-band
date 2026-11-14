@@ -44,7 +44,7 @@ function buildFunBtns(B){
  B.appendChild(pb('fun fix','<span class="emo">🪄</span>Fix my beat',fixBeat));B.appendChild(pb('fun','<span class="emo">🎲</span>Surprise',surprise));if(S.undo)B.appendChild(pb('fun undo','<span class="emo">↩️</span>Undo',undoSurprise));
  B.appendChild(pb('fun','<span class="emo">🥁</span>Fill',doFill));B.appendChild(pb('fun end','<span class="emo">🏁</span>ENDING',doEnding))}
 function buildZBar(B){B.classList.add('z');B.appendChild(pb('fun zb fix','<span class="emo">✨</span>Make it pretty',fixBeat));B.appendChild(pb('fun zb','<span class="emo">🎲</span>Surprise!',surprise));if(S.undo)B.appendChild(pb('fun zb','<span class="emo">↩️</span>Undo',undoSurprise));
- B.appendChild(pb('fun zb','<span class="emo">🥁</span>Drum roll!',doFill));B.appendChild(pb('fun zb end','<span class="emo">🏁</span>The End!',doEnding))}
+ B.appendChild(pb('fun zb','<span class="emo">🥁</span>Drum roll!',doFill));B.appendChild(pb('fun zb end','<span class="emo">🏁</span>The End!',doEnding));B.appendChild(pb('fun zb stk','<span class="emo">📒</span>Stickers '+stickers().length,openStickers))}
 /* Dad, listen! dance party: spinning lights, a disco ball and a flashing dance floor (soft colour changes, never a hard strobe) */
 var FLOOR=[];
 function buildParty(){var P2=$('party');if(!P2)return;var F=$('floor');F.innerHTML='';FLOOR=[];for(var i=0;i<24;i++){var d=document.createElement('i');F.appendChild(d);FLOOR.push(d)}}
@@ -81,3 +81,12 @@ function fixBeat(){unlock();var z=S.mode==='zoe',was=JSON.stringify(S.song),ch=f
 function wandFx(ch){var g=$('grid').getBoundingClientRect(),w=document.createElement('div');w.className='wand emo';w.textContent='🪄';document.body.appendChild(w);var t0=performance.now(),D=900;
  (function mv(){var k=Math.min(1,(performance.now()-t0)/D),x=g.left+g.width*k,y=g.top+g.height*(0.5-0.35*Math.sin(k*Math.PI*2));w.style.left=x+'px';w.style.top=y+'px';w.style.transform='rotate('+(-30+60*k)+'deg)';sparkle(x,y,4);if(k<1)requestAnimationFrame(mv);else{w.remove();sparkle(g.left+g.width/2,g.top+g.height/2,50);confetti(g.left+g.width/2,g.top+g.height/2,30)}})();
  if(!AC)return;var t=now()+0.02;smp('sparkle',t,{dest:BUS.ui,gain:.8});[0,4,7,12,16,19,24].forEach(function(d,j){var h=inst('bells',72+d,t+j*0.07,0.5,BUS.ui);h&&h.stop(t+j*0.07+0.3)});smp('boing1',t+0.6,{dest:BUS.ui,gain:.35,rate:1.4})}
+/* ===== Zoe: a sticker for every song she finishes, a sticker book, floating hearts ===== */
+var STICKERS=['🦄','🌈','🍓','🧁','🌸','⭐','🦋','🍭','🎀','👑','🐬','🐞','🍩','🌻','🐱','🐰','🦩','🍦','💎','🐣','🌙','🎈','🐼','🍒'];
+function stickers(){return LS.get('stickers',[])}
+function awardSticker(){var have=stickers(),left=STICKERS.filter(function(x){return have.indexOf(x)<0}),e=rnd(left.length?left:STICKERS);if(left.length)have.push(e);LS.set('stickers',have);
+ $('stickerE').textContent=e;$('stickerT').textContent=left.length?'You got a sticker! ('+have.length+'/'+STICKERS.length+')':'Super star! All the stickers!';var w=$('stickerWin');w.classList.remove('on');void w.offsetWidth;w.classList.add('on');
+ smp('sparkle',0,{dest:BUS.show,gain:.8});[0,4,7,12].forEach(function(d,j){var h=inst('bells',79+d,now()+0.15+j*0.09,0.5,BUS.show);h&&h.stop(now()+0.5+j*0.09)});sparkle(innerWidth/2,innerHeight*.55,70);buildPBar()}
+function openStickers(){var G=$('stg'),have=stickers();G.innerHTML='';STICKERS.forEach(function(e){var s=document.createElement('span');s.className='emo'+(have.indexOf(e)<0?' no':'');s.textContent=e;G.appendChild(s)});open('stickOv');smp('pop',0,{dest:BUS.ui})}
+function buildFloat(){var F=$('zfloat');if(!F||F.childNodes.length)return;for(var i=0;i<9;i++){var h=document.createElement('i');h.className='emo';h.textContent=['💖','🌸','✨','💗','🦋','⭐'][i%6];h.style.left=(i*11+3)+'%';h.style.animationDuration=(14+i*2.3)+'s';h.style.animationDelay=(-i*3.1)+'s';h.style.fontSize=(24+(i%3)*10)+'px';F.appendChild(h)}}
+(function(){var last=0;addEventListener('pointermove',function(e){if(S.mode!=='zoe'||!e.buttons&&e.pointerType==='mouse')return;var t=performance.now();if(t-last<45)return;last=t;sparkle(e.clientX,e.clientY,2)},{passive:true})})();

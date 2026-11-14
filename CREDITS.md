@@ -55,6 +55,9 @@ Licence checked on each source page on Nov 14, 2026. Picked by analysis, not by 
 - `sfx/honk1.mp3`: "Honk! (Vintage Bicycle Horn)" by Breviceps, https://freesound.org/people/Breviceps/sounds/468441/ (CC0). Used for the 🤡 Honker keys instrument. The file is copied from Excavator Blowout.
 - Cat choir reuses `sfx/meow.mp3` (three cats at the root, fifth and octave). 📯 Air horn reuses the CC0 meme `sfx/meme/airhorn.mp3`. The crash cymbal, drum-fill toms and ending chord are pitched or synthesized at runtime.
 
+### Art (v1.1.2)
+- The critter illustrations are inline SVG written for this game (src/a8_crit.js). They are original drawings with no outside art. Stickers and UI icons are system emoji.
+
 ## Meme kit (Doggo / Piggy row), all CC0 1.0
 These come from the family's CC0 meme-alike pack (`/workspace/meme-pack-cc0`, trimmed and loudness-normalized there). Each license was re-checked on its Freesound page for this release. The kit loads from `sfx/meme/manifest.json`; the family-only clips below load from `sfx/family-only/manifest.json`.
 - `sfx/meme/boom_hit.mp3` (Boom!): by XHALE303, https://freesound.org/people/XHALE303/sounds/535615/ (CC0 1.0)

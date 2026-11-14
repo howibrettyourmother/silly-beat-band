@@ -64,9 +64,9 @@ body.zoe .cr{width:96px;margin-left:-48px}body.zoe .cr .bd{font-size:72px}
 .cr.mute .bd{filter:grayscale(.8) brightness(.7);transform:rotate(-8deg) scale(.92)}.cr.mute .zz{display:block}
 @keyframes zz{50%{transform:translate(4px,-8px)}}
 .cr.hit .bd{animation:hop .28s ease-out}
-@keyframes hop{0%{transform:scale(1.18,.78)}40%{transform:translateY(-18px) scale(.92,1.12)}100%{transform:none}}
+@keyframes hop{0%{transform:scale(1.3,.68)}30%{transform:translateY(-26px) scale(.8,1.24)}62%{transform:translateY(0) scale(1.18,.84)}82%{transform:scale(.95,1.06)}100%{transform:none}}
 #stage.live .cr:not(.mute):not(.hit) .bd{animation:sway var(--beat,.5s) ease-in-out infinite alternate}
-@keyframes sway{0%{transform:rotate(-5deg)}100%{transform:rotate(5deg) translateY(-3px)}}
+@keyframes sway{0%{transform:rotate(-5deg) scale(1.07,.93)}100%{transform:rotate(5deg) translateY(-5px) scale(.95,1.06)}}
 .bch{position:relative;width:52px;text-align:center;touch-action:none}
 .bch .bd{font-size:38px;display:block;filter:drop-shadow(0 3px 2px #0006)}.bch .nm{font-size:9px;font-weight:800;opacity:.85;white-space:nowrap}
 body.zoe .bch{width:64px}body.zoe .bch .bd{font-size:48px}
@@ -90,6 +90,27 @@ body.zoe .bch{width:64px}body.zoe .bch .bd{font-size:48px}
 .ib.rec.on{background:#ef4444;color:#fff;animation:recp .8s ease-in-out infinite}
 body:not(.zoe) #stage{height:clamp(118px,19vh,180px)}
 #pbar:empty{display:none}
+/* illustrated critters */
+svg.crit{width:100%;height:100%;display:block;overflow:visible}
+.cr .bd{width:70px;height:70px;margin:0 auto}body.zoe .cr .bd{width:94px;height:94px}
+.bch .bd{width:46px;height:46px;margin:0 auto}body.zoe .bch .bd{width:58px;height:58px}
+#showBand .cr .bd{width:min(17vh,130px);height:min(17vh,130px)}
+.drag{width:84px;height:84px}
+#splBand span{width:min(12vh,90px);height:min(12vh,90px);margin:0 4px;vertical-align:bottom}#splBand{letter-spacing:0}
+.crit .ey{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.2s infinite}
+.cr:nth-child(odd) .crit .ey{animation-delay:-1.7s}.cr:nth-child(3n) .crit .ey{animation-delay:-3.1s}
+@keyframes blink{0%,93%,100%{transform:none}96%{transform:scaleY(.12)}}
+.crit .mo-o{opacity:0;transition:opacity .08s}.cr.hit .crit .mo-o{opacity:1}.cr.hit .crit .mo{opacity:0}
+.bch .bd{animation:wig 2.6s ease-in-out infinite,breathe 2.2s ease-in-out infinite}@keyframes breathe{50%{transform:scale(1.04,.96)}}
+/* Zoe: stickers + pink delight */
+#zfloat{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;display:none}body.zoe #zfloat{display:block}
+#zfloat i{position:absolute;bottom:-60px;font-style:normal;font-size:34px;opacity:.35;animation:zfl linear infinite}
+@keyframes zfl{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-115vh) rotate(40deg)}}
+#app{z-index:1}
+#stickerWin{display:none;flex-direction:column;align-items:center;margin-top:8px}#stickerWin.on{display:flex}
+#stickerWin .big1{font-size:110px;animation:stk 1s cubic-bezier(.2,1.6,.4,1)}@keyframes stk{0%{transform:scale(0) rotate(-180deg)}100%{transform:none}}
+#stickerWin b{font-size:26px;font-family:PM,"Marker Felt",cursive;font-weight:400;color:var(--acc)}
+.stg{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.stg span{font-size:54px;background:#fff4;border-radius:20px;padding:8px;line-height:1}.stg span.no{filter:grayscale(1) brightness(1.6);opacity:.35}
 /* fun buttons + party */
 .pb.fix{background:linear-gradient(180deg,#c084fc,#7c3aed);color:#fff;animation:dadp 2.8s ease-in-out infinite}body.zoe .pb.fix{background:linear-gradient(180deg,#fff,#ffb3dc);color:#c2185b}
 .pb.undo{background:#fff3}.ib.swap{background:linear-gradient(180deg,#facc15,#f97316);color:#3a1d00}
@@ -221,7 +242,7 @@ body.zoe .tb{border-radius:20px}
 body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6;border-radius:12px}
 @media (max-width:1120px){#top{gap:6px;padding-right:8px}.tb{min-width:50px;padding:0 6px;font-size:11px}#tempo{padding:0 8px;gap:4px}#tempo input{width:88px}#tabs .tb{min-width:60px}#dad{min-width:112px;font-size:14px}#play{min-width:64px}}
 </style></head><body>
-<div id="app">
+<div id="zfloat"></div><div id="app">
  <div id="top">
   <button class="tb" id="play"><span class="emo">▶️</span>Play</button>
   <div id="tempo"><span class="emo">🐢</span><input id="bpm" type="range" min="60" max="180" step="2" value="110" aria-label="tempo"><span class="emo">🐇</span><b id="bpmv">110</b></div>
@@ -261,8 +282,9 @@ body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6
 <div class="ov" id="shareOv"><div class="card"><button class="x">✕</button><h2>Share your song!</h2><div>Send this link to Dad (or Mom!). It opens your song in Silly Beat Band.</div><div id="shareUrl"></div><div>Short code:</div><div id="codeBox"></div>
  <div><button class="big" id="copyB">📋 Copy link</button><button class="big alt" id="shareSys" style="display:none">📤 Share</button></div></div></div>
 <div class="ov" id="themeOv"><div class="card"><button class="x">✕</button><h2>Pick your colors!</h2><div class="thg" id="thg"></div></div></div>
+<div class="ov" id="stickOv"><div class="card"><button class="x">✕</button><h2>My stickers</h2><div class="stg" id="stg"></div></div></div>
 <div class="ov" id="pickOv"><div class="card"><button class="x">✕</button><h2 id="pickH">Pick a sound</h2><div class="pg" id="pickG"></div></div></div>
-<div class="ov" id="show"><div id="party"><div class="beams"><i></i><i></i><i></i><i></i></div><div id="ball" class="emo">🪩</div><div id="floor"></div></div><button class="x" id="showX">✕</button><div id="showBy"></div><div id="showName"></div><div id="showBand"></div><div id="showBar"><i></i></div><div id="showEnd"><button class="big" id="showAgain">🔁 Again!</button><button class="big alt" id="showDone">👍 Done</button></div></div>
+<div class="ov" id="show"><div id="party"><div class="beams"><i></i><i></i><i></i><i></i></div><div id="ball" class="emo">🪩</div><div id="floor"></div></div><button class="x" id="showX">✕</button><div id="showBy"></div><div id="showName"></div><div id="showBand"></div><div id="showBar"><i></i></div><div id="stickerWin"><span class="big1 emo" id="stickerE">🦄</span><b id="stickerT">You got a sticker!</b></div><div id="showEnd"><button class="big" id="showAgain">🔁 Again!</button><button class="big alt" id="showDone">👍 Done</button></div></div>
 <div class="ov" id="recvOv"><div class="card"><h2 id="recvH">Someone made you a song!</h2><div id="recvName" class="mk" style="font-size:34px;margin:6px 0 14px"></div><button class="big" id="recvPlay">▶ Listen!</button> <button class="big alt" id="recvRemix">🎛️ Remix it</button> <button class="big alt" id="recvNo">✕ No thanks</button></div></div>
 <div class="ov on" id="splash"><div id="logo">Silly<br>Beat Band</div><div id="splBand" class="emo"></div><button id="splGo" class="mk">▶ Let's jam!</button></div>
 <div id="rot"><div class="emo" style="font-size:80px">📱↻</div>Turn the iPad sideways!</div>

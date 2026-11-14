@@ -8,15 +8,15 @@ function setBeatVar(){var b=(60/S.song.bpm)+'s';document.documentElement.style.s
 function buildStage(){var L=$('stageL'),B=$('bench');L.querySelectorAll('.cr').forEach(function(e){e.remove()});B.innerHTML='';crEls={};
  var on=ROWS().filter(function(r){return S.song.band[r.id]});
  on.forEach(function(r,i){var d=document.createElement('div');d.className='cr'+(S.song.band[r.id]===2?' mute':'');d.style.left=((i+0.5)/on.length*100)+'%';
-  d.innerHTML='<span class="zz emo">💤</span><span class="bd emo">'+r.e+'</span><span class="nm">'+r.n+'</span>';d.dataset.id=r.id;L.appendChild(d);crEls[r.id]=d;dragable(d,r,true)});
- ROWS().filter(function(r){return !S.song.band[r.id]}).forEach(function(r){var d=document.createElement('div');d.className='bch';d.innerHTML='<span class="bd emo">'+r.e+'</span><span class="nm">'+r.n+'</span>';d.dataset.id=r.id;B.appendChild(d);dragable(d,r,false)});
+  d.innerHTML='<span class="zz emo">💤</span><span class="bd">'+critOf(r)+'</span><span class="nm">'+r.n+'</span>';d.dataset.id=r.id;L.appendChild(d);crEls[r.id]=d;dragable(d,r,true)});
+ ROWS().filter(function(r){return !S.song.band[r.id]}).forEach(function(r){var d=document.createElement('div');d.className='bch';d.innerHTML='<span class="bd">'+critOf(r)+'</span><span class="nm">'+r.n+'</span>';d.dataset.id=r.id;B.appendChild(d);dragable(d,r,false)});
  $('hint').textContent=!on.length?'Tap a critter in the waiting room to start the band!':S.mode==='zoe'?'Tap the squares to make music! 🎶':'Drag critters onto the stage · tap one to hush it';
  ROWS().forEach(function(r){var row=hdrEls[r.id];if(!row)return;row.parentNode.classList.toggle('off',S.song.band[r.id]!==1);row.classList.toggle('zz',S.song.band[r.id]===2)})}
 function joinBand(id,quiet){var was=S.song.band[id];S.song.band[id]=1;var a=S.song.rows[id];if(!a.some(Boolean)){var g=GROOVE[id]||'1000100010001000';for(var i=0;i<S.song.n;i++){var c=g.charAt(S.song.n===16?i:i*2);a[i]=id==='meme'&&c==='1'?memeSel[S.mode]:(parseInt(c,16)||0)}refreshRow(id)}
  buildStage();if(!quiet&&!was){var r=rowById(id);toast(r.e+' '+r.n+' joined the band!');preview(r);var e=crEls[id];if(e)hop(e)}save()}
 function dragable(el,r,onStage){var sx,sy,moved=false,ghost=null,pid=null;
  el.addEventListener('pointerdown',function(e){e.preventDefault();unlock();pid=e.pointerId;sx=e.clientX;sy=e.clientY;moved=false;
-  function mv(ev){if(ev.pointerId!==pid)return;if(!moved&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>12){moved=true;ghost=document.createElement('div');ghost.className='drag emo';ghost.textContent=r.e;document.body.appendChild(ghost);el.style.opacity='.3'}
+  function mv(ev){if(ev.pointerId!==pid)return;if(!moved&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>12){moved=true;ghost=document.createElement('div');ghost.className='drag';ghost.innerHTML=critOf(r);document.body.appendChild(ghost);el.style.opacity='.3'}
    if(moved){ghost.style.left=ev.clientX+'px';ghost.style.top=ev.clientY+'px';var st=$('stageL').getBoundingClientRect();$('stage').classList.toggle('drop',!onStage&&inR(ev,st))}}
   function up(ev){if(ev.pointerId!==pid)return;removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);$('stage').classList.remove('drop');el.style.opacity='';
    if(ghost){ghost.remove();ghost=null}
