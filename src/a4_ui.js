@@ -70,7 +70,7 @@ function openPick(r){var ml=memeList(),G=$('pickG');G.innerHTML='';G.classList.t
 /* ---------- visuals ---------- */
 var lastStep=-1;
 function frame(){requestAnimationFrame(frame);if(AC&&VQ.length){var ct=AC.currentTime-(AC.outputLatency||0);while(VQ.length&&VQ[0].t<=ct){var q=VQ.shift();onStep(q)}}fxTick()}
-function onStep(q){var n=S.song.n;pbarStep(q);
+function onStep(q){if(q.end){endVis();return}var n=S.song.n;pbarStep(q);if(typeof partyStep==="function")partyStep(q);
  if(lastStep>=0)ROWS().forEach(function(r){var c=cellEls[r.id]&&cellEls[r.id][lastStep];if(c)c.classList.remove('ph')});
  ROWS().forEach(function(r){var c=cellEls[r.id]&&cellEls[r.id][q.step];if(c)c.classList.add('ph')});
  var hs=$('colhead').children;if(hs[lastStep])hs[lastStep].classList.remove('cur');if(hs[q.step])hs[q.step].classList.add('cur');lastStep=q.step;

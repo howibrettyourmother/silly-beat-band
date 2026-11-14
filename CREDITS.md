@@ -46,6 +46,15 @@ Each clip's license was checked on its Freesound page. Clips were trimmed to the
 - `sfx/squeak.mp3`: "Mouse Squeaks.wav" by shyguy014, https://freesound.org/people/shyguy014/sounds/463789/
 - `sfx/click.mp3`: "Soft UI Button Click" by Jummit, https://freesound.org/people/Jummit/sounds/528561/
 
+### Added in v1.1.1 (silly instruments and the big Stinky toot), all CC0 1.0
+Licence checked on each source page on Nov 14, 2026. Picked by analysis, not by ear.
+- `sfx/horn_dig.mp3` (1.5 s): "powerfull horn" by trezz77, https://freesound.org/people/trezz77/sounds/546528/ (CC0). Trimmed 0-1.5 s with a 0.25 s fade, used for the 🚜 Digger horn keys instrument.
+- `sfx/fart1.mp3`: "Flatulence #4" by Joseph Sardin, BigSoundBank #1031, https://bigsoundbank.com/flatulence-4-s1031.html (CC0). This is Stinky's third "big one" toot. The file is copied from Excavator Blowout.
+- `sfx/fart2.mp3`: "Flatulence #1" by charlesdu76, BigSoundBank #111, https://bigsoundbank.com/flatulence-1-s0111.html (CC0). Used for the 💨 Toot-o-phone keys instrument. The file is copied from Excavator Blowout.
+- `sfx/toot8.mp3`: "Fart - Close recording" by Sadiquecat, https://freesound.org/people/Sadiquecat/sounds/874487/ (CC0). The file is copied from Excavator Blowout.
+- `sfx/honk1.mp3`: "Honk! (Vintage Bicycle Horn)" by Breviceps, https://freesound.org/people/Breviceps/sounds/468441/ (CC0). Used for the 🤡 Honker keys instrument. The file is copied from Excavator Blowout.
+- Cat choir reuses `sfx/meow.mp3` (three cats at the root, fifth and octave). 📯 Air horn reuses the CC0 meme `sfx/meme/airhorn.mp3`. The crash cymbal, drum-fill toms and ending chord are pitched or synthesized at runtime.
+
 ## Meme kit (Doggo / Piggy row), all CC0 1.0
 These come from the family's CC0 meme-alike pack (`/workspace/meme-pack-cc0`, trimmed and loudness-normalized there). Each license was re-checked on its Freesound page for this release. The kit loads from `sfx/meme/manifest.json`; the family-only clips below load from `sfx/family-only/manifest.json`.
 - `sfx/meme/boom_hit.mp3` (Boom!): by XHALE303, https://freesound.org/people/XHALE303/sounds/535615/ (CC0 1.0)

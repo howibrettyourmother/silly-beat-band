@@ -1,10 +1,12 @@
 /* ===== Magic Keys ===== */
-var kScale=null,kWithBeat=false,KEYS=[],held={};
+var kSilly=false,kScale=null,kWithBeat=false,KEYS=[],held={};
 function keyNotes(){var z=S.mode==='zoe',sc=kScale||P().scale,b=SCALES[sc].slice(0,5),out=[];var cnt=z?8:11;for(var i=0;i<cnt;i++)out.push(60+(z?0:keyRoot())+b[i%5]+12*Math.floor(i/5));return out}
 function buildKeys(){var T=$('keysTop'),K=$('keys'),z=S.mode==='zoe';T.innerHTML='';
- (z?INST_Z:INST_A).forEach(function(it){var b=document.createElement('button');b.className='ib'+(S.song.inst===it.id?' on':'');b.innerHTML='<span class="emo">'+it.e+'</span>'+it.n;
+ var IL=z?INST_Z:INST_A.filter(function(x,i){return kSilly?i>=7:i<7});if(!z&&INST_A.slice(7).some(function(x){return x.id===S.song.inst})&&!kSilly&&!buildKeys.seen){kSilly=true;buildKeys.seen=1;return buildKeys()}
+ IL.forEach(function(it){var b=document.createElement('button');b.className='ib'+(S.song.inst===it.id?' on':'');b.innerHTML='<span class="emo">'+it.e+'</span>'+it.n;
   b.addEventListener('click',function(){unlock();S.song.inst=it.id;T.querySelectorAll('.ib').forEach(function(x){x.classList.remove('on')});b.classList.add('on');var h=inst(it.id,72,now()+0.01,0.9,BUS.keys);h&&h.stop(now()+0.4);save();
    if(!z)toast('🐦 Birdie plays '+it.n+' now!')});T.appendChild(b)});
+ if(!z){var sw=document.createElement('button');sw.className='ib swap';sw.innerHTML='<span class="emo">'+(kSilly?'🎹':'🤪')+'</span>'+(kSilly?'Normal':'Silly ones');sw.addEventListener('click',function(){unlock();kSilly=!kSilly;smp('boing1',0,{dest:BUS.ui,gain:.5});buildKeys()});T.appendChild(sw)}
  if(!z){var sb=document.createElement('button');sb.className='ib';var sc=kScale||P().scale;sb.innerHTML='<span class="emo">'+(sc==='minor'?'🌙':'☀️')+'</span>'+(sc==='minor'?'Spooky':'Happy');
   sb.addEventListener('click',function(){kScale=(kScale||P().scale)==='minor'?'major':'minor';buildKeys()});T.appendChild(sb)}
  var rb=document.createElement('button');rb.className='ib rec'+(kRec?' on':'');rb.innerHTML='<span class="emo">'+(kRec?'⏺️':'🔴')+'</span>'+(kRec?'Recording!':(z?'Record':'Record into song'));

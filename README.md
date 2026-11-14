@@ -12,6 +12,8 @@ A music-making game for Alex and Zoe. Built for iPad, landscape, touch.
 - **Record into song** (v1.1): on Magic Keys, notes snap to the nearest heard step and land in Birdie's row (Unicorn's in Zoe mode).
 - **Voices in saves** (v1.1): saving a song that uses a recorded voice keeps that voice with the song in IndexedDB on this iPad. Share links never carry the voice; a shared song plays a silly voice clip instead.
 - **Audio** (v1.1): any first touch unlocks audio, `navigator.audioSession` is set to playback where supported, one-shot and meme clips are loudness-normalized at load, and the master bus runs glue compressor, limiter and soft clip.
+- **Fun buttons** (v1.1.1): 🪄 **Fix my beat** tidies a messy beat without wiping it. It moves stray off-beat notes onto the grid, keeps one silly sound per step, eases tune notes that clash with the bass, and adds a kick and clap backbone if one is missing. It has one-tap ↩️ Undo. Zoe gets ✨ **Make it pretty**. Also 🎲 **Surprise me** (a random two-part song, with undo), 🥁 **Fill** / Drum roll, and 🏁 **ENDING** (a big final hit plus a bow). "Dad, listen!" is now a dance party with lights, a disco ball and a flashing floor (soft colour changes, no strobe).
+- **Silly instruments** (v1.1.1): Cat choir, Toot-o-phone, Digger horn, Air horn and Honker on Magic Keys (big kid, under "🤪 Silly ones"). Zoe gets Kitty choir and Toots. Stinky has a third, bigger toot.
 - **Zoe mode**: a big toggle with fewer rows, huge buttons, pink/sparkle themes, simple tempo buttons and only gentle sounds.
 
 Source: `src/a*_*.js` + `src/template.html`, built with `python3 src/build.py` into `index.html` and `sw.js` (the service worker precaches everything; bump `VERSION` each release).

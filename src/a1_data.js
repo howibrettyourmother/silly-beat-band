@@ -19,7 +19,7 @@ var ROWS_A=[
  {id:'hat',e:'🐭',n:'Squeaks',d:'Tss',k:'drum',st:1,c:'#ffd23f'},
  {id:'bass',e:'🐸',n:'Frog',d:'Bass',k:'bass',st:4,c:'#4ade80'},
  {id:'mel',e:'🐦',n:'Birdie',d:'Tune',k:'mel',st:6,c:'#38bdf8'},
- {id:'toot',e:'🦨',n:'Stinky',d:'Toot',k:'toot',st:2,c:'#a78bfa'},
+ {id:'toot',e:'🦨',n:'Stinky',d:'Toot',k:'toot',st:3,c:'#a78bfa'},
  {id:'chick',e:'🐔',n:'Cluck',d:'Rubber chicken',k:'chick',st:2,c:'#fb7185'},
  {id:'goat',e:'🐐',n:'Billy',d:'Goat singer',k:'goat',st:4,c:'#e9d5a1'},
  {id:'burp',e:'🦛',n:'Hippo',d:'Burp',k:'burp',st:2,c:'#86efac'},
@@ -34,8 +34,8 @@ var ROWS_Z=[
 function ROWS(m){return (m||S.mode)==='zoe'?ROWS_Z:ROWS_A}
 function rowById(id,m){var r=ROWS(m);for(var i=0;i<r.length;i++)if(r[i].id===id)return r[i];return null}
 /* instruments for the melody row + Magic Keys */
-var INST_A=[{id:'piano',e:'🎹',n:'Piano'},{id:'guitar',e:'🎸',n:'Guitar'},{id:'robot',e:'🤖',n:'Robot'},{id:'kazoo',e:'🎺',n:'Kazoo'},{id:'chip',e:'👾',n:'8-bit'},{id:'bells',e:'🔔',n:'Bells'},{id:'ghost',e:'👻',n:'Ghost'}];
-var INST_Z=[{id:'piano',e:'🎹',n:'Piano'},{id:'bells',e:'✨',n:'Sparkle'},{id:'kitty',e:'🐱',n:'Kitty'},{id:'chip',e:'👾',n:'Beepy'}];
+var INST_A=[{id:'piano',e:'🎹',n:'Piano'},{id:'guitar',e:'🎸',n:'Guitar'},{id:'robot',e:'🤖',n:'Robot'},{id:'kazoo',e:'🎺',n:'Kazoo'},{id:'chip',e:'👾',n:'8-bit'},{id:'bells',e:'🔔',n:'Bells'},{id:'ghost',e:'👻',n:'Ghost'},{id:'catchoir',e:'😺',n:'Cat choir'},{id:'tootophone',e:'💨',n:'Toot-o-phone'},{id:'digger',e:'🚜',n:'Digger horn'},{id:'airhorn',e:'📯',n:'Air horn'},{id:'honk',e:'🤡',n:'Honker'}];
+var INST_Z=[{id:'piano',e:'🎹',n:'Piano'},{id:'bells',e:'✨',n:'Sparkle'},{id:'kitty',e:'🐱',n:'Kitty'},{id:'chip',e:'👾',n:'Beepy'},{id:'catchoir',e:'😺',n:'Kitty choir'},{id:'tootophone',e:'💨',n:'Toots'}];
 /* presets: rows as strings of states (hex digits); Zoe ones are 8 steps */
 var PRESETS={
  rock:{e:'🎸',n:'Rock',zn:'Rock Star',bpm:116,kit:'rock',inst:'guitar',zinst:'piano',scale:'major',key:0,prog:[0,0,5,7],
@@ -65,6 +65,6 @@ var THEMES_Z=[{id:'',n:'Pink Sparkle',b:'linear-gradient(135deg,#ffd6ec,#ff7fbf)
 var ZPICS={C:'🐱',D:'🐶',E:'🐘',G:'🦒',A:'🐊'};
 var NOTE_NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 /* sample files (CC0, see CREDITS.md) */
-var SAMPLES=['kick','kick808','snare','clap','hat','sleigh','piano_c4','piano_c5','bell_f5','meow','toot6','toot7','chick1','chick2','goat1','goat3','burp1','burp2','boing1','cheer','sparkle','pop','duck','squeak','click','wow','trombone','whee2','v_hey','v_yeah','v_woohoo','v_uhoh'];
+var SAMPLES=['kick','kick808','snare','clap','hat','sleigh','piano_c4','piano_c5','bell_f5','meow','toot6','toot7','chick1','chick2','goat1','goat3','burp1','burp2','boing1','cheer','sparkle','pop','duck','squeak','click','wow','trombone','whee2','v_hey','v_yeah','v_woohoo','v_uhoh','fart1','fart2','toot8','honk1','horn_dig'];
 var CHOPS=[{id:'v_hey',n:'Hey!'},{id:'v_yeah',n:'Yeah!'},{id:'v_woohoo',n:'Woo hoo!'},{id:'v_uhoh',n:'Uh oh!'}];
 var FX=[{id:'normal',e:'🙂',n:'Normal'},{id:'chip',e:'🐿️',n:'Chipmunk'},{id:'robot',e:'🤖',n:'Robot'},{id:'monster',e:'👹',n:'Monster'}];

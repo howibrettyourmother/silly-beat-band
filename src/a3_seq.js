@@ -19,17 +19,17 @@ function trigger(r,v,t,b,i,dest){var p=P(),kit=p.kit,sd=stepDur(),sc=SCALES[p.sc
  case 'bass':bass(kit,36+k+p.prog[b%p.prog.length]+BASSDEG[(v-1)%4]+(k<0?12:0),t,sd*1.7,dest);break;
  case 'mel':var h=inst(S.song.inst,72+k+sc[(v-1)%6],t,0.9,dest);h&&h.stop(t+sd*1.8);break;
  case 'zmel':var zc=(p.zc||[1,3,4,3,5,4,3,2])[i%8],zm=v>=2?72+k+SCALES.major[(v-2)%5]+12*Math.floor((v-2)/5):72+k+sc[(zc-1)%6],h2=inst(S.song.inst,zm,t,0.85,dest);h2&&h2.stop(t+sd*1.6);break;
- case 'toot':smp(v===2?'toot7':'toot6',t,{dest:dest,gain:0.9,dur:sd*3.5});break;
+ case 'toot':smp(v===3?'fart1':v===2?'toot7':'toot6',t,{dest:dest,gain:0.9,dur:v===3?sd*6:sd*3.5});break;
  case 'chick':smp(v===2?'chick2':'chick1',t,{dest:dest,gain:0.8,dur:sd*3.5});break;
  case 'goat':var tg=72+k+GOATDEG[p.scale][(v-1)%4];smp('goat1',t,{dest:dest,gain:0.85,rate:Math.pow(2,(tg-78.6)/12),dur:sd*3.5});break;
  case 'burp':smp(v===2?'burp2':'burp1',t,{dest:dest,gain:v===2?1:0.9,dur:sd*4});break;
  case 'voice':if(S.voice&&!S.guest){var s=AC.createBufferSource();s.buffer=S.voice;var g=AC.createGain();g.gain.value=1;s.connect(g);g.connect(dest);s.start(t);var L=Math.min(S.voice.duration,sd*4);g.gain.setValueAtTime(1,t+L);g.gain.linearRampToValueAtTime(0,t+L+0.06);s.stop(t+L+0.08)}else smp(S.chop,t,{dest:dest,dur:sd*4});break;
  case 'meme':var ml=memeList(),c=ml[(v-1)%Math.max(1,ml.length)];if(c&&c.id==='__voice'){trigger({k:'voice'},1,t,b,i,dest)}else if(c)smp('meme:'+c.id,t,{dest:dest,gain:0.9,dur:Math.max(sd*6,0.9)});break}}
-function playStep(t){var hits=[],rows=S.song.pats[curPat]||S.song.rows;if(!songMode())rows=S.song.rows,curPat=S.song.ed;
- ROWS().forEach(function(r){var v=rows[r.id][step];if(recSkip&&recSkip.pat===curPat&&recSkip.step===step&&r.id==='mel'){recSkip=null;return}if(v&&audible(r.id)){trigger(r,v,t,bar,step,rowBus(r.id));hits.push(r.id)}});
- if(window.onPlayStep)onPlayStep(t,hits);RECQ.push({t:t,step:step,pat:curPat});if(RECQ.length>48)RECQ.shift();VQ.push({t:t,step:step,bar:bar,hits:hits,pat:curPat,ci:ci})}
+function playStep(t){var hits=[],rows=S.song.pats[curPat]||S.song.rows;if(!songMode())rows=S.song.rows,curPat=S.song.ed;var fill=fillStep(t);
+ ROWS().forEach(function(r){if(fill&&r.k==='drum')return;var v=rows[r.id][step];if(recSkip&&recSkip.pat===curPat&&recSkip.step===step&&r.id==='mel'){recSkip=null;return}if(v&&audible(r.id)){trigger(r,v,t,bar,step,rowBus(r.id));hits.push(r.id)}});
+ RECQ.push({t:t,step:step,pat:curPat});if(RECQ.length>48)RECQ.shift();VQ.push({t:t,step:step,bar:bar,hits:hits,pat:curPat,ci:ci})}
 function sched(){if(!playing||!AC)return;var ct=AC.currentTime;if(nextT<ct-0.25)nextT=ct+0.05;
- while(nextT<ct+0.12){playStep(nextT);nextT+=stepDur();step++;if(step>=S.song.n){step=0;bar=(bar+1)%P().prog.length;barsPlayed++;if(songMode()){ci=(ci+1)%S.song.chain.length;curPat=S.song.chain[ci]}else{ci=0;curPat=S.song.ed}if(showBars&&barsPlayed>=showBars){var endT=nextT;playing=false;setTimeout(function(){showEnd()},Math.max(0,(endT-AC.currentTime)*1000));break}}}}
+ while(nextT<ct+0.12){playStep(nextT);nextT+=stepDur();step++;if(step>=S.song.n){step=0;bar=(bar+1)%P().prog.length;barsPlayed++;if(songMode()){ci=(ci+1)%S.song.chain.length;curPat=S.song.chain[ci]}else{ci=0;curPat=S.song.ed}if((showBars&&barsPlayed>=showBars)||S.endNext){var endT=nextT,sh=!!(showBars&&barsPlayed>=showBars);S.endNext=false;playing=false;endingHit(endT);VQ.push({t:endT,end:true});setTimeout(function(){if(sh)showEnd();else finishEnding()},Math.max(0,(endT-AC.currentTime)*1000)+1500);break}if(S.crashNext){S.crashNext=false;crash(nextT,MASTER)}}}}
 function start(fromTop){if(!AC)return;unlock();if(playing)return;playing=true;if(fromTop!==false){step=0;bar=0;ci=0}curPat=songMode()?S.song.chain[ci%S.song.chain.length]:S.song.ed;barsPlayed=0;nextT=AC.currentTime+0.06;sched();timer=setInterval(sched,25);uiPlay(true)}
 function stop(){playing=false;clearInterval(timer);timer=0;VQ=[];showBars=0;uiPlay(false)}
 /* share code: m(a|z) preset bpm(2) inst band(hex) + rows (hex states, g..v = runs of 1..16 zeros) + ~name */
