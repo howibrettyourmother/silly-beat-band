@@ -61,7 +61,7 @@ function preview(r,v,i){if(!AC)return;unlock();v=v||1;var t=AC.currentTime+0.005
  addEventListener('pointermove',function(e){if(!paint||e.pointerId!==paint.id)return;var c=at(e);if(c&&c.dataset.r===paint.r)setC(c,paint.v)});
  addEventListener('pointerup',function(e){if(paint&&e.pointerId===paint.id)paint=null});addEventListener('pointercancel',function(){paint=null})})();
 /* meme / sound picker */
-function openPick(r){var ml=memeList(),G=$('pickG');G.innerHTML='';$('pickH').textContent=S.mode==='zoe'?'Pick a silly sound!':'Pick a meme sound';
+function openPick(r){var ml=memeList(),G=$('pickG');G.innerHTML='';G.classList.toggle('many',ml.length>16);$('pickH').textContent=S.mode==='zoe'?'Pick a silly sound!':'Pick a meme sound';
  if(!ml.length){G.innerHTML='<div>Sounds are still loading…</div>'}
  ml.forEach(function(c,i){var b=document.createElement('button');b.className='pc'+(memeSel[S.mode]===i+1?' on':'');b.innerHTML='<span class="emo">'+c.emoji+'</span>'+c.label;
   b.addEventListener('click',function(){memeSel[S.mode]=i+1;smp('meme:'+c.id,0,{dest:BUS.ui});G.querySelectorAll('.pc').forEach(function(x){x.style.outline=''});b.style.outline='4px solid var(--acc)';

@@ -175,7 +175,7 @@ body:not(.zoe) .key .kp{display:none}
 .x{position:absolute;right:10px;top:8px;width:44px;height:44px;border-radius:50%;background:#0004;font-size:22px}
 .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .pc{border-radius:20px;padding:14px 8px;background:#fff2;box-shadow:0 5px 0 #0005;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:900;font-size:18px}
-.pc .emo{font-size:54px}.pc small{font-weight:600;font-size:12px;opacity:.8}
+.pc .emo{font-size:54px}.pg.many{grid-template-columns:repeat(6,1fr);gap:8px}.pg.many .pc{font-size:13px;padding:8px 4px;border-radius:14px}.pg.many .pc .emo{font-size:32px}.pc small{font-weight:600;font-size:12px;opacity:.8}
 .songs{display:flex;flex-direction:column;gap:8px;margin:10px 0;max-height:42vh;overflow:auto;text-align:left}
 .sr{display:flex;align-items:center;gap:8px;background:#fff1;border-radius:16px;padding:6px 8px}
 .sr b{flex:1;font-size:18px}.sr button{font-size:24px;width:48px;height:44px;border-radius:12px;background:#fff2}
@@ -254,11 +254,11 @@ body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6
 <div class="ov" id="recvOv"><div class="card"><h2 id="recvH">Someone made you a song!</h2><div id="recvName" class="mk" style="font-size:34px;margin:6px 0 14px"></div><button class="big" id="recvPlay">▶ Listen!</button> <button class="big alt" id="recvRemix">🎛️ Remix it</button> <button class="big alt" id="recvNo">✕ No thanks</button></div></div>
 <div class="ov on" id="splash"><div id="logo">Silly<br>Beat Band</div><div id="splBand" class="emo"></div><button id="splGo" class="mk">▶ Let's jam!</button></div>
 <div id="rot"><div class="emo" style="font-size:80px">📱↻</div>Turn the iPad sideways!</div>
-<canvas id="fx"></canvas><div id="toast"></div><div id="ver">v1.0.1-20261114</div>
+<canvas id="fx"></canvas><div id="toast"></div><div id="ver">v1.0.2-20261114</div>
 <script>
 (function(){"use strict";
-/* ===== Silly Beat Band v1.0.1-20261114 : data ===== */
-var VER='1.0.1-20261114';
+/* ===== Silly Beat Band v1.0.2-20261114 : data ===== */
+var VER='1.0.2-20261114';
 var $=function(id){return document.getElementById(id)};
 var Q=location.search;
 var KID=(Q.match(/[?&](?:kid|mode)=(alex|zoe)\b/)||[])[1];
@@ -349,7 +349,7 @@ function loadMemes(){
    MEME.push({id:id,label:c.label||c.name||c.title||id,emoji:c.emoji||'🤪',gentle:!!(c.gentle||c.zoe),alex:c.alex!==false,fam:!!fam,file:/^(\/|https?:)/.test(f)||f.indexOf('sfx/')===0?f:dir+f})})}).catch(function(){})}
  return grab('sfx/meme/',0).then(function(){return grab('sfx/family-only/',1)}).then(function(){return Promise.all(MEME.map(function(c){return loadOne('meme:'+c.id,c.file)}))}).then(function(){MEME=MEME.filter(function(c){return BUF['meme:'+c.id]});buildGrid&&S&&buildGrid()})}
 function loadAll(){if(!AC)return Promise.resolve();return Promise.all(SAMPLES.map(function(n){return loadOne(n,'sfx/'+n+'.mp3')})).then(function(){ready=true}).then(loadMemes)}
-function memeList(m){var z=(m||S.mode)==='zoe',a=MEME.filter(function(c){return z?c.gentle:c.alex}).slice(0,z?14:15);if((m||S.mode)==='zoe')a.push({id:'__voice',label:'My voice',emoji:'🎤',gentle:true});return a}
+function memeList(m){var z=(m||S.mode)==='zoe',a=MEME.filter(function(c){return z?c.gentle:c.alex}).slice(0,z?14:61);if((m||S.mode)==='zoe')a.push({id:'__voice',label:'My voice',emoji:'🎤',gentle:true});return a}
 function unlock(){if(!AC)return;try{if(AC.state!=='running')AC.resume()}catch(e){}if(unlocked)return;unlocked=true;try{var b=AC.createBuffer(1,1,22050),s=AC.createBufferSource();s.buffer=b;s.connect(AC.destination);s.start(0)}catch(e){}}
 function now(){return AC?AC.currentTime:0}
 /* play a sample */
@@ -420,7 +420,7 @@ function trigger(r,v,t,b,i,dest){var p=P(),kit=p.kit,sd=stepDur(),sc=SCALES[p.sc
  case 'goat':var tg=72+k+GOATDEG[p.scale][(v-1)%4];smp('goat1',t,{dest:dest,gain:0.85,rate:Math.pow(2,(tg-78.6)/12),dur:sd*3.5});break;
  case 'burp':smp(v===2?'burp2':'burp1',t,{dest:dest,gain:v===2?1:0.9,dur:sd*4});break;
  case 'voice':if(S.voice){var s=AC.createBufferSource();s.buffer=S.voice;var g=AC.createGain();g.gain.value=1;s.connect(g);g.connect(dest);s.start(t);var L=Math.min(S.voice.duration,sd*4);g.gain.setValueAtTime(1,t+L);g.gain.linearRampToValueAtTime(0,t+L+0.06);s.stop(t+L+0.08)}else smp(S.chop,t,{dest:dest,dur:sd*4});break;
- case 'meme':var ml=memeList(),c=ml[(v-1)%Math.max(1,ml.length)];if(c&&c.id==='__voice'){trigger({k:'voice'},1,t,b,i,dest)}else if(c)smp('meme:'+c.id,t,{dest:dest,gain:0.9,dur:Math.max(sd*4,0.6)});break}}
+ case 'meme':var ml=memeList(),c=ml[(v-1)%Math.max(1,ml.length)];if(c&&c.id==='__voice'){trigger({k:'voice'},1,t,b,i,dest)}else if(c)smp('meme:'+c.id,t,{dest:dest,gain:0.9,dur:Math.max(sd*6,0.9)});break}}
 function playStep(t){var hits=[];ROWS().forEach(function(r){var v=S.song.rows[r.id][step];if(v&&audible(r.id)){trigger(r,v,t,bar,step,rowBus(r.id));hits.push(r.id)}});
  VQ.push({t:t,step:step,bar:bar,hits:hits})}
 function sched(){if(!playing||!AC)return;var ct=AC.currentTime;if(nextT<ct-0.25)nextT=ct+0.05;
@@ -429,18 +429,21 @@ function start(fromTop){if(!AC)return;unlock();if(playing)return;playing=true;if
 function stop(){playing=false;clearInterval(timer);timer=0;VQ=[];showBars=0;uiPlay(false)}
 /* share code: m(a|z) preset bpm(2) inst band(hex) + rows (hex states, g..v = runs of 1..16 zeros) + ~name */
 var B36='0123456789abcdefghijklmnopqrstuvwxyz';
+var B62='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function encRow3(a){var s='',z=0;function fl(){while(z>0){var k=Math.min(z,16);s+=k===1?'0':'_'+B62.charAt(k);z-=k}}a.forEach(function(v){if(!v)z++;else{fl();s+=B62.charAt(Math.min(61,v))}});fl();return s}
+function decRow3(s,n){var a=[],i=0;while(i<s.length&&a.length<n){var c=s.charAt(i);if(c==='_'){var k=B62.indexOf(s.charAt(i+1));for(var j=0;j<k;j++)a.push(0);i+=2;continue}var v=B62.indexOf(c);a.push(v>0?v:0);i++}while(a.length<n)a.push(0);return a.slice(0,n)}
 function encRow(a){var s='',z=0;function fl(){while(z>0){var k=Math.min(z,16);s+=String.fromCharCode(102+k);z-=k}}a.forEach(function(v){if(!v)z++;else{fl();s+=(v&15).toString(16)}});fl();return s}
 function decRow(s,n){var a=[],i=0;while(i<s.length&&a.length<n){var c=s.charCodeAt(i);if(c>=103&&c<=118){for(var k=0;k<c-102;k++)a.push(0)}else a.push(parseInt(s.charAt(i),16)||0);i++}while(a.length<n)a.push(0);return a.slice(0,n)}
 function encSong(sg,m){var rows=ROWS(m),mask=0;rows.forEach(function(r,i){if(sg.band[r.id]===1)mask|=1<<i;if(sg.band[r.id]===2)mask|=1<<(i+16)});
  var insts=m==='zoe'?INST_Z:INST_A,ii=Math.max(0,insts.map(function(x){return x.id}).indexOf(sg.inst));
- var s='2'+(m==='zoe'?'z':'a')+PRESET_ORDER.indexOf(sg.p)+('0'+Math.round(sg.bpm).toString(36)).slice(-2)+ii.toString(36)+mask.toString(36)+'-';
- s+=rows.map(function(r){return encRow(sg.rows[r.id])}).join('.');var nm=(sg.name||'').replace(/[^\w !?'&-]/g,'').slice(0,40);if(nm)s+='~'+encodeURIComponent(nm.replace(/ /g,'_'));return s}
+ var s='3'+(m==='zoe'?'z':'a')+PRESET_ORDER.indexOf(sg.p)+('0'+Math.round(sg.bpm).toString(36)).slice(-2)+ii.toString(36)+mask.toString(36)+'-';
+ s+=rows.map(function(r){return encRow3(sg.rows[r.id])}).join('.');var nm=(sg.name||'').replace(/[^\w !?'&-]/g,'').slice(0,40);if(nm)s+='~'+encodeURIComponent(nm.replace(/ /g,'_'));return s}
 function decSong(code){code=String(code||'').trim();var mm=/[#&?]S=([^&\s]+)/.exec(code);if(mm)code=mm[1];try{code=decodeURIComponent(code)}catch(e){}code=code.replace(/\s+/g,'');
  var nm='',ti=code.indexOf('~');if(ti>=0){nm=code.slice(ti+1).replace(/_/g,' ').replace(/[^\w !?'&-]/g,'');code=code.slice(0,ti)}
- var h=/^2([az])(\d)([0-9a-z]{2})([0-9a-z])([0-9a-z]+)-(.*)$/.exec(code);if(!h)return null;var m=h[1]==='z'?'zoe':'alex',pid=PRESET_ORDER[+h[2]];if(!pid)return null;
+ var h=/^([23])([az])(\d)([0-9a-z]{2})([0-9a-z])([0-9a-z]+)-(.*)$/.exec(code);if(!h)return null;var v3=h[1]==='3';h.splice(1,1);var m=h[1]==='z'?'zoe':'alex',pid=PRESET_ORDER[+h[2]];if(!pid)return null;
  var n=m==='zoe'?8:16,rows=ROWS(m),parts=h[6].split('.'),mask=parseInt(h[5],36),insts=m==='zoe'?INST_Z:INST_A;
  var sg={p:pid,bpm:Math.max(60,Math.min(180,parseInt(h[3],36)||110)),inst:(insts[parseInt(h[4],36)]||insts[0]).id,n:n,rows:{},band:{},name:nm};
- rows.forEach(function(r,i){sg.rows[r.id]=decRow(parts[i]||'',n);sg.band[r.id]=(mask>>(i+16))&1?2:(mask>>i)&1?1:0});return {mode:m,song:sg}}
+ rows.forEach(function(r,i){sg.rows[r.id]=(v3?decRow3:decRow)(parts[i]||'',n);sg.band[r.id]=(mask>>(i+16))&1?2:(mask>>i)&1?1:0});return {mode:m,song:sg}}
 function shareURL(code){return location.origin+location.pathname.replace(/index\.html$/,'')+'#S='+code}
 
 /* ===== UI: stage, grid, top bar, overlays ===== */
@@ -506,7 +509,7 @@ function preview(r,v,i){if(!AC)return;unlock();v=v||1;var t=AC.currentTime+0.005
  addEventListener('pointermove',function(e){if(!paint||e.pointerId!==paint.id)return;var c=at(e);if(c&&c.dataset.r===paint.r)setC(c,paint.v)});
  addEventListener('pointerup',function(e){if(paint&&e.pointerId===paint.id)paint=null});addEventListener('pointercancel',function(){paint=null})})();
 /* meme / sound picker */
-function openPick(r){var ml=memeList(),G=$('pickG');G.innerHTML='';$('pickH').textContent=S.mode==='zoe'?'Pick a silly sound!':'Pick a meme sound';
+function openPick(r){var ml=memeList(),G=$('pickG');G.innerHTML='';G.classList.toggle('many',ml.length>16);$('pickH').textContent=S.mode==='zoe'?'Pick a silly sound!':'Pick a meme sound';
  if(!ml.length){G.innerHTML='<div>Sounds are still loading…</div>'}
  ml.forEach(function(c,i){var b=document.createElement('button');b.className='pc'+(memeSel[S.mode]===i+1?' on':'');b.innerHTML='<span class="emo">'+c.emoji+'</span>'+c.label;
   b.addEventListener('click',function(){memeSel[S.mode]=i+1;smp('meme:'+c.id,0,{dest:BUS.ui});G.querySelectorAll('.pc').forEach(function(x){x.style.outline=''});b.style.outline='4px solid var(--acc)';
@@ -707,7 +710,7 @@ function clearHash(){try{history.replaceState(null,'',location.pathname+location
 
 })();
 </script>
-<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',function(){navigator.serviceWorker.register('sw.js?v=1.0.1-20261114').catch(function(){})})}</script>
+<script>if('serviceWorker' in navigator&&location.protocol==='https:'){addEventListener('load',function(){navigator.serviceWorker.register('sw.js?v=1.0.2-20261114').catch(function(){})})}</script>
 <script>/*hub-home*/(function(){var own='alex',k;try{k=localStorage.kidsHub}catch(e){}if(k!=='zoe'&&k!=='alex')k=own;
 var u=k==='zoe'?'/doodle-and-zoe/':'/alex-games/',b=document.createElement('div');b.id='hubHome';b.setAttribute('role','button');b.setAttribute('aria-label','hold to go home');
 b.innerHTML='<svg width="38" height="38" viewBox="0 0 38 38" style="position:absolute;left:0;top:0;pointer-events:none"><circle cx="19" cy="19" r="16" fill="none" stroke="#ffd54a" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 19 19)"/></svg><span style="position:relative;pointer-events:none">🏠</span>';

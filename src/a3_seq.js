@@ -20,7 +20,7 @@ function trigger(r,v,t,b,i,dest){var p=P(),kit=p.kit,sd=stepDur(),sc=SCALES[p.sc
  case 'goat':var tg=72+k+GOATDEG[p.scale][(v-1)%4];smp('goat1',t,{dest:dest,gain:0.85,rate:Math.pow(2,(tg-78.6)/12),dur:sd*3.5});break;
  case 'burp':smp(v===2?'burp2':'burp1',t,{dest:dest,gain:v===2?1:0.9,dur:sd*4});break;
  case 'voice':if(S.voice){var s=AC.createBufferSource();s.buffer=S.voice;var g=AC.createGain();g.gain.value=1;s.connect(g);g.connect(dest);s.start(t);var L=Math.min(S.voice.duration,sd*4);g.gain.setValueAtTime(1,t+L);g.gain.linearRampToValueAtTime(0,t+L+0.06);s.stop(t+L+0.08)}else smp(S.chop,t,{dest:dest,dur:sd*4});break;
- case 'meme':var ml=memeList(),c=ml[(v-1)%Math.max(1,ml.length)];if(c&&c.id==='__voice'){trigger({k:'voice'},1,t,b,i,dest)}else if(c)smp('meme:'+c.id,t,{dest:dest,gain:0.9,dur:Math.max(sd*4,0.6)});break}}
+ case 'meme':var ml=memeList(),c=ml[(v-1)%Math.max(1,ml.length)];if(c&&c.id==='__voice'){trigger({k:'voice'},1,t,b,i,dest)}else if(c)smp('meme:'+c.id,t,{dest:dest,gain:0.9,dur:Math.max(sd*6,0.9)});break}}
 function playStep(t){var hits=[];ROWS().forEach(function(r){var v=S.song.rows[r.id][step];if(v&&audible(r.id)){trigger(r,v,t,bar,step,rowBus(r.id));hits.push(r.id)}});
  VQ.push({t:t,step:step,bar:bar,hits:hits})}
 function sched(){if(!playing||!AC)return;var ct=AC.currentTime;if(nextT<ct-0.25)nextT=ct+0.05;
@@ -29,16 +29,19 @@ function start(fromTop){if(!AC)return;unlock();if(playing)return;playing=true;if
 function stop(){playing=false;clearInterval(timer);timer=0;VQ=[];showBars=0;uiPlay(false)}
 /* share code: m(a|z) preset bpm(2) inst band(hex) + rows (hex states, g..v = runs of 1..16 zeros) + ~name */
 var B36='0123456789abcdefghijklmnopqrstuvwxyz';
+var B62='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function encRow3(a){var s='',z=0;function fl(){while(z>0){var k=Math.min(z,16);s+=k===1?'0':'_'+B62.charAt(k);z-=k}}a.forEach(function(v){if(!v)z++;else{fl();s+=B62.charAt(Math.min(61,v))}});fl();return s}
+function decRow3(s,n){var a=[],i=0;while(i<s.length&&a.length<n){var c=s.charAt(i);if(c==='_'){var k=B62.indexOf(s.charAt(i+1));for(var j=0;j<k;j++)a.push(0);i+=2;continue}var v=B62.indexOf(c);a.push(v>0?v:0);i++}while(a.length<n)a.push(0);return a.slice(0,n)}
 function encRow(a){var s='',z=0;function fl(){while(z>0){var k=Math.min(z,16);s+=String.fromCharCode(102+k);z-=k}}a.forEach(function(v){if(!v)z++;else{fl();s+=(v&15).toString(16)}});fl();return s}
 function decRow(s,n){var a=[],i=0;while(i<s.length&&a.length<n){var c=s.charCodeAt(i);if(c>=103&&c<=118){for(var k=0;k<c-102;k++)a.push(0)}else a.push(parseInt(s.charAt(i),16)||0);i++}while(a.length<n)a.push(0);return a.slice(0,n)}
 function encSong(sg,m){var rows=ROWS(m),mask=0;rows.forEach(function(r,i){if(sg.band[r.id]===1)mask|=1<<i;if(sg.band[r.id]===2)mask|=1<<(i+16)});
  var insts=m==='zoe'?INST_Z:INST_A,ii=Math.max(0,insts.map(function(x){return x.id}).indexOf(sg.inst));
- var s='2'+(m==='zoe'?'z':'a')+PRESET_ORDER.indexOf(sg.p)+('0'+Math.round(sg.bpm).toString(36)).slice(-2)+ii.toString(36)+mask.toString(36)+'-';
- s+=rows.map(function(r){return encRow(sg.rows[r.id])}).join('.');var nm=(sg.name||'').replace(/[^\w !?'&-]/g,'').slice(0,40);if(nm)s+='~'+encodeURIComponent(nm.replace(/ /g,'_'));return s}
+ var s='3'+(m==='zoe'?'z':'a')+PRESET_ORDER.indexOf(sg.p)+('0'+Math.round(sg.bpm).toString(36)).slice(-2)+ii.toString(36)+mask.toString(36)+'-';
+ s+=rows.map(function(r){return encRow3(sg.rows[r.id])}).join('.');var nm=(sg.name||'').replace(/[^\w !?'&-]/g,'').slice(0,40);if(nm)s+='~'+encodeURIComponent(nm.replace(/ /g,'_'));return s}
 function decSong(code){code=String(code||'').trim();var mm=/[#&?]S=([^&\s]+)/.exec(code);if(mm)code=mm[1];try{code=decodeURIComponent(code)}catch(e){}code=code.replace(/\s+/g,'');
  var nm='',ti=code.indexOf('~');if(ti>=0){nm=code.slice(ti+1).replace(/_/g,' ').replace(/[^\w !?'&-]/g,'');code=code.slice(0,ti)}
- var h=/^2([az])(\d)([0-9a-z]{2})([0-9a-z])([0-9a-z]+)-(.*)$/.exec(code);if(!h)return null;var m=h[1]==='z'?'zoe':'alex',pid=PRESET_ORDER[+h[2]];if(!pid)return null;
+ var h=/^([23])([az])(\d)([0-9a-z]{2})([0-9a-z])([0-9a-z]+)-(.*)$/.exec(code);if(!h)return null;var v3=h[1]==='3';h.splice(1,1);var m=h[1]==='z'?'zoe':'alex',pid=PRESET_ORDER[+h[2]];if(!pid)return null;
  var n=m==='zoe'?8:16,rows=ROWS(m),parts=h[6].split('.'),mask=parseInt(h[5],36),insts=m==='zoe'?INST_Z:INST_A;
  var sg={p:pid,bpm:Math.max(60,Math.min(180,parseInt(h[3],36)||110)),inst:(insts[parseInt(h[4],36)]||insts[0]).id,n:n,rows:{},band:{},name:nm};
- rows.forEach(function(r,i){sg.rows[r.id]=decRow(parts[i]||'',n);sg.band[r.id]=(mask>>(i+16))&1?2:(mask>>i)&1?1:0});return {mode:m,song:sg}}
+ rows.forEach(function(r,i){sg.rows[r.id]=(v3?decRow3:decRow)(parts[i]||'',n);sg.band[r.id]=(mask>>(i+16))&1?2:(mask>>i)&1?1:0});return {mode:m,song:sg}}
 function shareURL(code){return location.origin+location.pathname.replace(/index\.html$/,'')+'#S='+code}

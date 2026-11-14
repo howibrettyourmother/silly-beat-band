@@ -19,7 +19,7 @@ function loadMemes(){
    MEME.push({id:id,label:c.label||c.name||c.title||id,emoji:c.emoji||'🤪',gentle:!!(c.gentle||c.zoe),alex:c.alex!==false,fam:!!fam,file:/^(\/|https?:)/.test(f)||f.indexOf('sfx/')===0?f:dir+f})})}).catch(function(){})}
  return grab('sfx/meme/',0).then(function(){return grab('sfx/family-only/',1)}).then(function(){return Promise.all(MEME.map(function(c){return loadOne('meme:'+c.id,c.file)}))}).then(function(){MEME=MEME.filter(function(c){return BUF['meme:'+c.id]});buildGrid&&S&&buildGrid()})}
 function loadAll(){if(!AC)return Promise.resolve();return Promise.all(SAMPLES.map(function(n){return loadOne(n,'sfx/'+n+'.mp3')})).then(function(){ready=true}).then(loadMemes)}
-function memeList(m){var z=(m||S.mode)==='zoe',a=MEME.filter(function(c){return z?c.gentle:c.alex}).slice(0,z?14:15);if((m||S.mode)==='zoe')a.push({id:'__voice',label:'My voice',emoji:'🎤',gentle:true});return a}
+function memeList(m){var z=(m||S.mode)==='zoe',a=MEME.filter(function(c){return z?c.gentle:c.alex}).slice(0,z?14:61);if((m||S.mode)==='zoe')a.push({id:'__voice',label:'My voice',emoji:'🎤',gentle:true});return a}
 function unlock(){if(!AC)return;try{if(AC.state!=='running')AC.resume()}catch(e){}if(unlocked)return;unlocked=true;try{var b=AC.createBuffer(1,1,22050),s=AC.createBufferSource();s.buffer=b;s.connect(AC.destination);s.start(0)}catch(e){}}
 function now(){return AC?AC.currentTime:0}
 /* play a sample */

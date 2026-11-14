@@ -47,7 +47,7 @@ Each clip's license was checked on its Freesound page. Clips were trimmed to the
 - `sfx/click.mp3`: "Soft UI Button Click" by Jummit, https://freesound.org/people/Jummit/sounds/528561/
 
 ## Meme kit (Doggo / Piggy row), all CC0 1.0
-These come from the family's CC0 meme-alike pack (`/workspace/meme-pack-cc0`, trimmed and loudness-normalized there). Each license was re-checked on its Freesound page for this release. The kit loads from `sfx/meme/manifest.json`, and a second manifest at `sfx/family-only/manifest.json` is merged in if one is ever added.
+These come from the family's CC0 meme-alike pack (`/workspace/meme-pack-cc0`, trimmed and loudness-normalized there). Each license was re-checked on its Freesound page for this release. The kit loads from `sfx/meme/manifest.json`; the family-only clips below load from `sfx/family-only/manifest.json`.
 - `sfx/meme/boom_hit.mp3` (Boom!): by XHALE303, https://freesound.org/people/XHALE303/sounds/535615/ (CC0 1.0)
 - `sfx/meme/metal_pipe.mp3` (Metal pipe): by Anzbot, https://freesound.org/people/Anzbot/sounds/562162/ (CC0 1.0)
 - `sfx/meme/bonk.mp3` (Bonk): by reevesT, https://freesound.org/people/reevesT/sounds/857868/ (CC0 1.0)
@@ -72,4 +72,40 @@ These come from the family's CC0 meme-alike pack (`/workspace/meme-pack-cc0`, tr
 - `sfx/sparkle.mp3` (Sparkle, Zoe mode): by newagesoup, https://freesound.org/people/newagesoup/sounds/351408/ (CC0 1.0)
 
 ## Family-only, copyrighted, not for public release
-None are shipped in this release. The family-only meme pack's README says Brett asked not to put those clips in a public GitHub Pages repo yet, so `sfx/family-only/` stays empty. If he OKs it later, drop the MP3s plus a `manifest.json` (`{"clips":[{"id","file","label","emoji","gentle"}]}`) into `sfx/family-only/`, list each one here, rebuild, and bump the version.
+These 35 meme clips are copyrighted. They are used with Brett's approval in this private, non-profit kids' game, and on Nov 14, 2026 he said to post them on the site anyway. **The GitHub Pages repo is public, so "family-only" is a label, not access control.** They are the same files Excavator Blowout v1.7.4 ships, from the family meme pack (`/workspace/meme-pack`). They were downloaded from myinstants.com, trimmed, loudness-normalized, and saved as mono 64 kbps MP3. Nobody listened to them when they were picked. Voiced clips were screened with faster-whisper; anything the pack or Excavator rejected (for example "emotional damage", whose transcript contained "damn it") is not included.
+They appear only in Alex's Meme list (after the CC0 clips). Zoe mode never shows them. Labels marked "(meme)" are the meme versions of sounds that also have a CC0 version.
+- `sfx/family-only/vine_boom.mp3` (Vine boom, 1.20 s): https://www.myinstants.com/en/instant/vine-boom-sound-70972/
+- `sfx/family-only/bruh.mp3` (Bruh, 0.47 s): https://www.myinstants.com/en/instant/bruh-sound-effect-2-51486/
+- `sfx/family-only/sad_trombone.mp3` (Sad trombone (meme), 3.16 s): https://www.myinstants.com/en/instant/sad-trombone/
+- `sfx/family-only/airhorn.mp3` (Airhorn (meme), 1.59 s): https://www.myinstants.com/en/instant/mlg-airhorn/
+- `sfx/family-only/oh_no_no_no.mp3` (Oh no no no, 4.81 s): https://www.myinstants.com/en/instant/oh-no-no-no-no-tiktok-11109/
+- `sfx/family-only/mario_coin.mp3` (Mario coin, 0.71 s): https://www.myinstants.com/en/instant/coin-mario/
+- `sfx/family-only/mario_jump.mp3` (Mario jump, 0.65 s): https://www.myinstants.com/en/instant/super-mario-jump-89968/
+- `sfx/family-only/mario_1up.mp3` (Mario 1-up, 0.91 s): https://www.myinstants.com/en/instant/mario-1up/
+- `sfx/family-only/minecraft_hurt.mp3` (Minecraft hurt, 0.37 s): https://www.myinstants.com/en/instant/minecraft-hurt/
+- `sfx/family-only/roblox_oof.mp3` (Roblox oof, 0.34 s): https://www.myinstants.com/en/instant/roblox-oof/
+- `sfx/family-only/boing.mp3` (Cartoon boing (meme), 0.73 s): https://www.myinstants.com/en/instant/cartoon-boing-48644/
+- `sfx/family-only/slide_whistle.mp3` (Slide whistle (meme), 1.07 s): https://www.myinstants.com/en/instant/cartoon-slide-whistle-1386/
+- `sfx/family-only/record_scratch.mp3` (Record scratch (meme), 0.71 s): https://www.myinstants.com/en/instant/record-scratch/
+- `sfx/family-only/anime_wow.mp3` (Anime wow, 3.55 s): https://www.myinstants.com/en/instant/anime-wow/
+- `sfx/family-only/crowd_cheer.mp3` (Crowd cheer, 3.53 s): https://www.myinstants.com/en/instant/crowd-cheer-20179/
+- `sfx/family-only/ba_dum_tss.mp3` (Ba-dum-tss (meme), 1.72 s): https://www.myinstants.com/en/instant/ba-dum-tssss-25991/
+- `sfx/family-only/metal_pipe.mp3` (Metal pipe (meme), 3.19 s): https://www.myinstants.com/en/instant/jixaw-metal-pipe-falling-sound-28270/
+- `sfx/family-only/bonk.mp3` (Bonk (meme), 0.44 s): https://www.myinstants.com/en/instant/doge-bonk-84044/
+- `sfx/family-only/taco_bell_bong.mp3` (Taco Bell bong, 1.75 s): https://www.myinstants.com/en/instant/taco-bell-bong-bruh-5894/
+- `sfx/family-only/crickets.mp3` (Crickets, 3.87 s): https://www.myinstants.com/en/instant/awkward-crickets-18144/
+- `sfx/family-only/wrong_buzzer.mp3` (Wrong buzzer (meme), 1.10 s): https://www.myinstants.com/en/instant/wrong-answer-buzzer-6983/
+- `sfx/family-only/yippee.mp3` (Yippee, 0.68 s): https://www.myinstants.com/en/instant/tbh-yippee-81266/
+- `sfx/family-only/sheesh.mp3` (Sheesh, 1.15 s): https://www.myinstants.com/en/instant/sheeeeesh-35698/
+- `sfx/family-only/lets_a_go.mp3` (Let's-a-go, 0.97 s): https://www.myinstants.com/en/instant/mario-64-lets-a-go/
+- `sfx/family-only/goofy_yell.mp3` (Goofy yell, 1.93 s): https://www.myinstants.com/en/instant/goofy-yelling-76377/
+- `sfx/family-only/toot.mp3` (Toot (meme), 0.37 s): https://www.myinstants.com/en/instant/fart-button/
+- `sfx/family-only/burp.mp3` (Burp, 1.23 s): https://www.myinstants.com/en/instant/burp-blahhhh/
+- `sfx/family-only/quack.mp3` (Quack (meme), 2.04 s): https://www.myinstants.com/en/instant/quacks/
+- `sfx/family-only/cartoon_punch.mp3` (Cartoon punch, 0.60 s): https://www.myinstants.com/en/instant/cartoon-punch-sound-effect-59674/
+- `sfx/family-only/mission_failed.mp3` (Mission failed, 2.77 s): https://www.myinstants.com/en/instant/mission-failed-well-get-them-6/
+- `sfx/family-only/boowomp.mp3` (Boowomp, 0.44 s): https://www.myinstants.com/en/instant/spongebob-boowomp-96031/
+- `sfx/family-only/yeet.mp3` (Yeet, 2.25 s): https://www.myinstants.com/en/instant/yeet/
+- `sfx/family-only/price_is_right_fail.mp3` (Price is Right fail, 4.55 s): https://www.myinstants.com/en/instant/price-is-right-fail/
+- `sfx/family-only/hitmarker.mp3` (Hitmarker, 0.13 s): https://www.myinstants.com/en/instant/hitmarker-noise/
+- `sfx/family-only/goose_honk.mp3` (Goose honk, 0.24 s): https://www.myinstants.com/en/instant/untitled-goose-honk-51300/
