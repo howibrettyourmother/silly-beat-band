@@ -77,6 +77,19 @@ body.zoe .bch{width:64px}body.zoe .bch .bd{font-size:48px}
 .note{position:absolute;pointer-events:none;font-size:22px;animation:nf 1s ease-out forwards;z-index:3}
 @keyframes nf{0%{opacity:1;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(var(--dx,10px),-70px) scale(1.2) rotate(20deg)}}
 #hint{position:absolute;left:50%;top:6px;transform:translateX(-50%);font-size:12px;font-weight:700;background:#0005;border-radius:10px;padding:2px 10px;white-space:nowrap;pointer-events:none;opacity:.9}
+/* song builder bar */
+#pbar{flex:0 0 auto;display:flex;align-items:center;gap:6px;padding:6px 10px 0;min-height:46px}
+#pbar .pbl{font-size:11px;font-weight:900;opacity:.75;text-transform:uppercase;letter-spacing:.5px}
+.pb{height:40px;min-width:44px;border-radius:12px;background:var(--panel);box-shadow:0 3px 0 #0005;font-weight:900;font-size:18px;padding:0 8px;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+.pb.part{background:color-mix(in srgb,var(--pc),#000 35%);box-shadow:0 3px 0 #0005,inset 0 0 0 2px var(--pc)}.pb.part.on{background:var(--pc);color:#fff;text-shadow:0 2px 0 #0005;transform:translateY(-2px)}
+.pb.cur{outline:3px solid var(--acc);outline-offset:1px}
+#chain{display:flex;gap:4px;background:#0003;border-radius:14px;padding:3px}
+.pb.cs{min-width:34px;height:34px;font-size:15px;border-radius:10px;background:var(--pc);box-shadow:0 2px 0 #0005}
+.pb.mini{min-width:34px;height:34px;font-size:16px}.pb.whole{font-size:14px}.pb.whole.on{background:var(--acc);color:#3a1d00}
+.pb.fun{font-size:14px}.pb.fun .emo{font-size:20px}
+.ib.rec.on{background:#ef4444;color:#fff;animation:recp .8s ease-in-out infinite}
+body:not(.zoe) #stage{height:clamp(118px,19vh,180px)}
+#pbar:empty{display:none}
 /* grid */
 #gridWrap{flex:1 1 auto;min-height:0;padding:8px 10px 10px;display:flex;flex-direction:column}
 #colhead{display:flex;gap:4px;padding-left:calc(var(--hw) + 4px);height:16px;flex:0 0 auto}body.zoe #colhead{gap:8px;padding-left:calc(var(--hw) + 8px)}
@@ -196,6 +209,7 @@ body.zoe .rh .pick{font-size:26px;right:4px;top:auto;bottom:4px;background:#fff6
  </div>
  <div class="scr on" id="s-beat">
   <div id="stage"><div class="lights"><i></i><i></i><i></i></div><div id="stageL"><div id="hint">Drag critters onto the stage · tap one to hush it</div></div><div id="bench"></div></div>
+  <div id="pbar"></div>
   <div id="gridWrap"><div id="colhead"></div><div id="grid"></div></div>
  </div>
  <div class="scr" id="s-keys">

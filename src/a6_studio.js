@@ -19,7 +19,7 @@ function render(){if(!RAW||!AC)return Promise.resolve();var fx=S.voiceFx,rate=fx
  else s.connect(out);
  s.start(0);
  return new Promise(function(res){oc.oncomplete=function(e){res(e.renderedBuffer)};var p=oc.startRendering();if(p&&p.then)p.then(res,function(){res(null)})}).then(function(buf){if(!buf)return;
-  var d=buf.getChannelData(0),pk=0;for(var i=0;i<d.length;i++)pk=Math.max(pk,Math.abs(d[i]));if(pk>0){var g=0.9/pk;for(i=0;i<d.length;i++)d[i]*=g}S.voice=buf})}
+  var d=buf.getChannelData(0),pk=0;for(var i=0;i<d.length;i++)pk=Math.max(pk,Math.abs(d[i]));if(pk>0){var g=Math.min(0.98/pk,loudGain(d,buf.sampleRate,-16));for(i=0;i<d.length;i++)d[i]*=g}S.voice=buf})}
 function trim(d,sr){var w=Math.floor(sr*0.01),pk=0,i;for(i=0;i<d.length;i++)pk=Math.max(pk,Math.abs(d[i]));if(pk<0.01)return null;var th=pk*0.08,a=0,b=d.length-1;
  for(i=0;i<d.length;i++)if(Math.abs(d[i])>th){a=i;break}for(i=d.length-1;i>0;i--)if(Math.abs(d[i])>th){b=i;break}
  a=Math.max(0,a-Math.floor(sr*0.012));b=Math.min(d.length,b+Math.floor(sr*0.12));var o=d.slice(a,b),f=Math.min(o.length,w*3);for(i=0;i<f;i++)o[o.length-1-i]*=i/f;return o}
@@ -46,6 +46,8 @@ $('toBeat').addEventListener('click',function(){unlock();if(!S.voice&&!RAW){var 
  goScr('beat');toast(S.mode==='zoe'?'🐷 Piggy sings your voice!':'🦜 Polly says it in your beat!');start()});
 /* keep the voice per kid in IndexedDB (raw at 22 kHz + effect) */
 function idb(){return new Promise(function(res,rej){try{var r=indexedDB.open('sbb',1);r.onupgradeneeded=function(){r.result.createObjectStore('v')};r.onsuccess=function(){res(r.result)};r.onerror=rej}catch(e){rej(e)}})}
-function storeVoice(){if(!RAW)return;var step=RAW.sr>30000?2:1,n=Math.floor(RAW.d.length/step),d=new Float32Array(n);for(var i=0;i<n;i++)d[i]=RAW.d[i*step];
- idb().then(function(db){db.transaction('v','readwrite').objectStore('v').put({d:d,sr:RAW.sr/step,fx:S.voiceFx,chop:RAW.chop},KID)}).catch(function(){})}
-function loadVoice(){return idb().then(function(db){return new Promise(function(res){var q=db.transaction('v').objectStore('v').get(KID);q.onsuccess=function(){var v=q.result;if(v&&v.d){RAW={d:v.d,sr:v.sr,chop:v.chop};S.voiceFx=v.fx||'normal';if(v.chop)S.chop=v.chop}res()};q.onerror=function(){res()}})}).then(function(){if(RAW)return render()}).catch(function(){})}
+function storeVoice(key){if(!RAW)return;var step=RAW.sr>30000?2:1,n=Math.floor(RAW.d.length/step),d=new Float32Array(n);for(var i=0;i<n;i++)d[i]=RAW.d[i*step];
+ idb().then(function(db){db.transaction('v','readwrite').objectStore('v').put({d:d,sr:RAW.sr/step,fx:S.voiceFx,chop:RAW.chop},key||KID)}).catch(function(){})}
+function dropVoice(key){idb().then(function(db){db.transaction('v','readwrite').objectStore('v').delete(key)}).catch(function(){})}
+function usesVoice(){if(S.mode==='zoe'){var vi=memeList().map(function(x){return x.id}).indexOf('__voice')+1;return vi>0&&S.song.pats.some(function(pt){return pt.meme.indexOf(vi)>=0})}return S.song.pats.some(function(pt){return pt.voice.some(Boolean)})}
+function loadVoice(key){return idb().then(function(db){return new Promise(function(res){var q=db.transaction('v').objectStore('v').get(key||KID);q.onsuccess=function(){var v=q.result;if(v&&v.d){RAW={d:v.d,sr:v.sr,chop:v.chop};S.voiceFx=v.fx||'normal';if(v.chop)S.chop=v.chop}res()};q.onerror=function(){res()}})}).then(function(){if(RAW)return render()}).catch(function(){})}

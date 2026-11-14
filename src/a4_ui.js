@@ -46,11 +46,11 @@ function buildGrid(){var G=$('grid'),n=S.song.n;G.innerHTML='';cellEls={};hdrEls
   G.appendChild(row)});
  ROWS().forEach(function(r){refreshRow(r.id)});buildStage()}
 function cellFace(r,v){if(!v)return '';if(r.k==='meme'){var ml=memeList(),c=ml[(v-1)%Math.max(1,ml.length)];return '<span class="ce emo">'+(c?c.emoji:'❓')+'</span>'}
- if(r.k==='zmel')return '<span class="ce emo">✨</span>';if(r.k==='voice')return '<span class="ce emo">🗣️</span>';
+ if(r.k==='zmel')return '<span class="ce emo">'+(v>=2?(ZPICS[NOTE_NAMES[SCALES.major[(v-2)%5]]]||'⭐'):'✨')+'</span>';if(r.k==='voice')return '<span class="ce emo">🗣️</span>';
  if(r.st>1)return '<i style="--lv:'+(v-1)*(5/(r.st-1||1))/1+'"></i>';if(S.mode==='zoe')return '<span class="ce emo">'+r.e+'</span>';return ''}
 function refreshCell(r,i){var c=cellEls[r.id][i],v=S.song.rows[r.id][i];c.classList.toggle('on',!!v);c.innerHTML=cellFace(r,v);if(v&&r.st>1)c.style.filter='hue-rotate('+((v-1)*22)+'deg)';else c.style.filter=''}
 function refreshRow(id){var r=rowById(id);if(!r||!cellEls[id])return;for(var i=0;i<S.song.n;i++)refreshCell(r,i)}
-function nextVal(r,v){if(r.k==='meme'){var s=memeSel[S.mode];return v===s?0:s}return (v+1)%(r.st+1)}
+function nextVal(r,v){if(r.k==='meme'){var s=memeSel[S.mode];return v===s?0:s}return v>r.st?0:(v+1)%(r.st+1)}
 function preview(r,v,i){if(!AC)return;unlock();v=v||1;var t=AC.currentTime+0.005;trigger(r,v,t,0,i==null?0:i,BUS.ui)}
 (function(){var paint=null;
  function at(e){var el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.closest?el.closest('.cell'):null}
@@ -70,7 +70,7 @@ function openPick(r){var ml=memeList(),G=$('pickG');G.innerHTML='';G.classList.t
 /* ---------- visuals ---------- */
 var lastStep=-1;
 function frame(){requestAnimationFrame(frame);if(AC&&VQ.length){var ct=AC.currentTime-(AC.outputLatency||0);while(VQ.length&&VQ[0].t<=ct){var q=VQ.shift();onStep(q)}}fxTick()}
-function onStep(q){var n=S.song.n;
+function onStep(q){var n=S.song.n;pbarStep(q);
  if(lastStep>=0)ROWS().forEach(function(r){var c=cellEls[r.id]&&cellEls[r.id][lastStep];if(c)c.classList.remove('ph')});
  ROWS().forEach(function(r){var c=cellEls[r.id]&&cellEls[r.id][q.step];if(c)c.classList.add('ph')});
  var hs=$('colhead').children;if(hs[lastStep])hs[lastStep].classList.remove('cur');if(hs[q.step])hs[q.step].classList.add('cur');lastStep=q.step;
