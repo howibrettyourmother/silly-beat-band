@@ -29,7 +29,11 @@ function loadMemes(){
  return grab('sfx/meme/',0).then(function(){return grab('sfx/family-only/',1)}).then(function(){return Promise.all(MEME.map(function(c){return loadOne('meme:'+c.id,c.file)}))}).then(function(){MEME=MEME.filter(function(c){return BUF['meme:'+c.id]});buildGrid&&S&&buildGrid()})}
 function loadAll(){if(!AC)return Promise.resolve();return Promise.all(SAMPLES.map(function(n){return loadOne(n,'sfx/'+n+'.mp3')})).then(function(){ready=true}).then(loadMemes)}
 function memeList(m){var z=(m||S.mode)==='zoe',a=MEME.filter(function(c){return z?c.gentle:c.alex}).slice(0,z?14:61);if((m||S.mode)==='zoe')a.push({id:'__voice',label:'My voice',emoji:'🎤',gentle:true});return a}
-function unlock(){if(!AC)return;try{if(AC.state!=='running')AC.resume()}catch(e){}if(unlocked)return;unlocked=true;try{var b=AC.createBuffer(1,1,22050),s=AC.createBufferSource();s.buffer=b;s.connect(AC.destination);s.start(0)}catch(e){}}
+var introBuf=null,introSrc=null,introDone=false,introLoading=false;
+function playIntro(){if(introDone||introSrc||!AC)return;function go(){if(introDone||introSrc||!introBuf)return;try{var s=AC.createBufferSource(),g=AC.createGain();s.buffer=introBuf;g.gain.value=0.85;s.connect(g);g.connect(MASTER);s._g=g;s.onended=function(){if(introSrc===s){introSrc=null;introDone=true}};s.start(0);introSrc=s}catch(e){introDone=true}}
+ if(introBuf){go();return}if(introLoading)return;introLoading=true;fetch('music/intro.mp3').then(function(r){if(!r.ok)throw 0;return r.arrayBuffer()}).then(decode).then(function(b){introBuf=b;go()}).catch(function(){introDone=true})}
+function skipIntro(){introDone=true;if(introSrc){try{var tm=AC&&AC.currentTime||0,g=introSrc._g;if(g&&AC){g.gain.cancelScheduledValues(tm);g.gain.setValueAtTime(g.gain.value,tm);g.gain.linearRampToValueAtTime(0.0001,tm+0.25)}introSrc.stop(tm+0.3)}catch(e){}introSrc=null}}
+function unlock(){if(!AC)return;try{if(AC.state!=='running')AC.resume()}catch(e){}if(unlocked)return;unlocked=true;try{var b=AC.createBuffer(1,1,22050),s=AC.createBufferSource();s.buffer=b;s.connect(AC.destination);s.start(0)}catch(e){}playIntro()}
 ['touchstart','touchend','pointerdown','mousedown','keydown','click'].forEach(function(t){addEventListener(t,function(){if(AC&&(AC.state!=='running'||!unlocked))unlock()},{capture:true,passive:true})});
 function now(){return AC?AC.currentTime:0}
 /* play a sample */

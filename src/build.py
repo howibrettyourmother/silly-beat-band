@@ -19,10 +19,12 @@ i=t.rfind('</body>');t=t[:i]+sw+'\n'+home+'\n'+swr+'\n'+play+'\n'+t[i:]
 open(f'{R}/index.html','w').write(t)
 # service worker: precache everything shipped
 A=['./','index.html','manifest.json','apple-touch-icon.png','apple-touch-icon-120.png','apple-touch-icon-152.png','apple-touch-icon-167.png','favicon-32.png','icon-192.png','icon-512.png']
-for root,_,fs in os.walk(f'{R}/sfx'):
-  for f in sorted(fs):
-    p=os.path.relpath(os.path.join(root,f),R)
-    if p.endswith(('.mp3','.json','.m4a','.ogg','.wav')):A.append(p)
+for folder in ('sfx','music'):
+  if not os.path.isdir(f'{R}/{folder}'): continue
+  for root,_,fs in os.walk(f'{R}/{folder}'):
+    for f in sorted(fs):
+      p=os.path.relpath(os.path.join(root,f),R)
+      if p.endswith(('.mp3','.json','.m4a','.ogg','.wav')):A.append(p)
 import json
 s=open(f'{D}/sw.tmpl.js').read().replace('%V%',VER).replace('%A%',json.dumps(A))
 open(f'{R}/sw.js','w').write(s)
